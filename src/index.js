@@ -7,19 +7,25 @@ export const state = {
   currentMode: null,
   currentImage: null,
 }
+export const images = {
+  star: null,
+}
 
 // Fonts
-let ocrFont
+let Font
 
 export function preload() {
-  ocrFont = loadFont('/src/assets/fonts/PressStart2P.ttf')
+  Font = loadFont('/src/assets/fonts/PressStart2P.ttf')
+  images.star = loadImage('/src/assets/images/star.png')
+  images.clock = loadImage('/src/assets/images/clock.png')
+  images.heart = loadImage('/src/assets/images/heart.png')
 }
 
 export function setup() {
   createCanvas(1155, 650)
 
   noStroke()
-  textFont(ocrFont)
+  textFont(Font)
 
   state.currentPage = new Start()
 }

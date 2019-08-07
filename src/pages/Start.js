@@ -1,5 +1,6 @@
 import { BasePage, Imprint } from './index.js'
 import { state } from '../index.js'
+import { ChooseMode } from './ChooseMode.js'
 
 let colorsBW = [40, 255, 255, 255, 255]
 
@@ -13,20 +14,39 @@ class Button {
   draw(activeButton) {
     const isActive = activeButton === this
 
-    // Styling der Startseite
-    noStroke()
-    fill(255, 255, 0)
-    textSize(50)
-    textAlign(LEFT, TOP)
-    text('COLOR MASH', 328, 100)
-
     strokeWeight(8)
     if (isActive) stroke(0, 255, 255)
     else stroke(255, 0, 255)
 
     fill(0)
     rect(this.x, this.y, 300, 75)
+  }
+}
 
+export class Start extends BasePage {
+  constructor() {
+    super()
+
+    const startButton = new Button({ x: 428, y: 225 }, ChooseMode)
+    const helpButton = new Button({ x: 428, y: 350 }, Imprint)
+    const leaderboardButton = new Button({ x: 428, y: 475 }, Imprint)
+
+    this.buttons = [startButton, helpButton, leaderboardButton]
+    this.activeButtonIndex = 0
+  }
+
+  draw() {
+    super.draw()
+    // Styling der Startseite
+    noStroke()
+    fill(255, 255, 0)
+    textSize(50)
+    textAlign(LEFT, TOP)
+    text('COLOR MASH', 328, 100)
+    // Buttons rendern
+    const activeButton = this.buttons[this.activeButtonIndex]
+    this.buttons.forEach(button => button.draw(activeButton))
+    // Texte etc
     noStroke()
     fill(255)
     textSize(18)
@@ -37,25 +57,6 @@ class Button {
     textAlign(RIGHT, TOP)
     fill(random(colorsBW))
     text('PRESS i FOR IMPRINT', width - 30, 610)
-  }
-}
-
-export class Start extends BasePage {
-  constructor() {
-    super()
-
-    const startButton = new Button({ x: 428, y: 225 }, Imprint)
-    const helpButton = new Button({ x: 428, y: 350 }, Imprint)
-    const leaderboardButton = new Button({ x: 428, y: 475 }, Imprint)
-
-    this.buttons = [startButton, helpButton, leaderboardButton]
-    this.activeButtonIndex = 0
-  }
-
-  draw() {
-    super.draw()
-    const activeButton = this.buttons[this.activeButtonIndex]
-    this.buttons.forEach(button => button.draw(activeButton))
   }
 
   onKeyPress() {

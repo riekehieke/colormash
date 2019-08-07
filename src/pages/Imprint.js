@@ -14,7 +14,6 @@ export class Imprint extends BasePage {
     fill(255)
     textSize(30)
     textAlign(CENTER, TOP)
-    // text('IMPRINT', 473, 100)
     text('IMPRINT', width / 2, 100)
     textSize(10)
     textLeading(19)
