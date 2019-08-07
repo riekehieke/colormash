@@ -10,8 +10,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  background: #000;
 }
 canvas {
   margin: auto;
   display: block;
+  box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.3);
 }
