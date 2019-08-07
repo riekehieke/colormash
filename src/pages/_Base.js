@@ -3,7 +3,8 @@ import { HEADER_HEIGHT } from "../constants.js";
 
 export class BasePage {
   draw() {
-    fill(229);
-    rect(0, HEADER_HEIGHT, 1155, 600);
+    noStroke();
+    fill(40);
+    rect(0, 0, 1155, 650);
   }
 }
