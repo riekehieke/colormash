@@ -4,6 +4,8 @@ import { Start } from './pages/index.js'
 
 export const state = {
   currentPage: null,
+  currentMode: null,
+  currentImage: null,
 }
 
 // Fonts
