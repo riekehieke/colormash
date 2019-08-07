@@ -1,6 +1,8 @@
 import { BasePage, Imprint } from './index.js'
 import { state } from '../index.js'
 
+let colorsBW = [40, 255, 255, 255, 255]
+
 class Button {
   constructor({ x, y }, Page) {
     this.x = x
@@ -30,9 +32,10 @@ class Button {
     textSize(18)
     text('START', 533, 255)
     text('HOW TO PLAY', 478.5, 380)
-    text('LEADERBOARD', 478.5, 505)
+    text('HIGHSCORES', 478.5, 505)
     textSize(10)
     textAlign(RIGHT, TOP)
+    fill(random(colorsBW))
     text('PRESS i FOR IMPRINT', width - 30, 610)
   }
 }
