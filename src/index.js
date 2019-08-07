@@ -1,6 +1,5 @@
 /// <reference path="../globals.d.ts" />
 
-import { Header } from './components/Header.js'
 import { Start } from './pages/index.js'
 
 export const state = {
@@ -21,7 +20,6 @@ export function setup() {
   textFont(ocrFont)
 
   state.currentPage = new Start()
-  header = new Header()
 }
 
 export function draw() {
