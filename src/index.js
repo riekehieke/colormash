@@ -1,5 +1,5 @@
 import { Header } from "./components/Header.js";
-import { Start, Imprint } from "./pages/index.js";
+import { Start } from "./pages/index.js";
 
 export const state = {
   currentPage: null
