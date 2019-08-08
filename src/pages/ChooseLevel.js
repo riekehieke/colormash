@@ -28,27 +28,38 @@ class ImageButton {
   }
 
   draw(isSelected) {
-    const { x, y, icon } = this.drawOptions
-
-    // Button icon
-    imageMode(LEFT, TOP)
-    image(icon, x, y)
-
+    const { x, y, label, icon } = this.drawOptions
+    if (icon) {
+      // Button icon
+      imageMode(CENTER)
+      image(icon, x, y)
+    }
     // Button outline
     strokeWeight(8)
     if (isSelected) stroke(random(colorsBlue), 255, 255)
     else stroke(255, 0, 255)
 
     // Button background
-    fill(0, 0, 0, 0)
-    rectMode(LEFT, TOP)
+    if (label) {
+      fill(0)
+    } else {
+      fill(0, 0, 0, 0)
+    }
+    rectMode(CENTER, TOP)
     rect(x, y, 138, 138)
     rectMode(CORNER)
+
+    // Button label
+    noStroke()
+    fill(255)
+    textSize(18)
+    textAlign(CENTER, TOP)
+    text(label, x, y - 9)
   }
 }
 
-const xFirstUpper = 239
-const yFirstUpper = 206
+const xFirstUpper = 308
+const yFirstUpper = 294
 
 export class ChooseLevel extends BasePage {
   constructor() {
@@ -95,42 +106,50 @@ export class ChooseLevel extends BasePage {
       y: yFirstUpper + 180,
     })
     const image9 = new ImageButton(LVL9, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 1',
       x: xFirstUpper,
       y: yFirstUpper,
     })
     const image10 = new ImageButton(LVL10, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 2',
       x: xFirstUpper + 180,
       y: yFirstUpper,
     })
     const image11 = new ImageButton(LVL11, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 3',
       x: xFirstUpper + 180 * 2,
       y: yFirstUpper,
     })
     const image12 = new ImageButton(LVL12, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 4',
       x: xFirstUpper + 180 * 3,
       y: yFirstUpper,
     })
     const image13 = new ImageButton(LVL13, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 5',
       x: xFirstUpper,
       y: yFirstUpper + 180,
     })
     const image14 = new ImageButton(LVL14, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 6',
       x: xFirstUpper + 180 * 1,
       y: yFirstUpper + 180,
     })
     const image15 = new ImageButton(LVL15, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 7',
       x: xFirstUpper + 180 * 2,
       y: yFirstUpper + 180,
     })
     const image16 = new ImageButton(LVL16, {
-      icon: images.placeholderText,
+      // icon: images.placeholderText,
+      label: 'Text 8',
       x: xFirstUpper + 180 * 3,
       y: yFirstUpper + 180,
     })
@@ -205,47 +224,35 @@ export class ChooseLevel extends BasePage {
       this.currentIndex--
     }
 
-    if (
-      this.currentRow !== this.upperRowImg &&
-      this.currentRow !== this.lowerRowImg
-    ) {
-      if (keyCode === DOWN_ARROW && this.currentRow !== this.lowerRowImg) {
-        this.currentRow = this.lowerRowImg
-      }
-      if (keyCode === UP_ARROW && this.currentRow !== this.upperRowImg) {
-        this.currentRow = this.upperRowImg
-      }
+    if (keyCode === DOWN_ARROW && this.currentRow === this.upperRowImg) {
+      this.currentRow = this.lowerRowImg
     }
-
-    if (
-      this.currentRow !== this.upperRowText &&
-      this.currentRow !== this.lowerRowText
-    ) {
-      if (keyCode === DOWN_ARROW && this.currentRow !== this.lowerRowText) {
-        this.currentRow = this.lowerRowText
-      }
-      if (keyCode === UP_ARROW && this.currentRow !== this.upperRowText) {
-        this.currentRow = this.upperRowText
-      }
+    if (keyCode === DOWN_ARROW && this.currentRow === this.upperRowText) {
+      this.currentRow = this.lowerRowText
     }
-
-    if (
-      key === 's' &&
-      this.currentRow !== this.upperRowImg &&
-      this.currentRow !== this.lowerRowImg
-    ) {
+    if (keyCode === UP_ARROW && this.currentRow === this.lowerRowImg) {
       this.currentRow = this.upperRowImg
-      console.log('Switch zu Bild')
-      console.log(this.currentRow)
-    } else {
+    }
+    if (keyCode === UP_ARROW && this.currentRow === this.lowerRowText) {
       this.currentRow = this.upperRowText
-      console.log('Switch zu Text')
-      console.log(this.currentRow)
     }
 
-    if (keyCode === ENTER) {
-      state.currentLevel = this.selectedButton.level
-      state.currentPage = new Game()
+    if (key === 's') {
+      if (
+        this.currentRow !== this.upperRowImg &&
+        this.currentRow !== this.lowerRowImg
+      ) {
+        this.currentRow = this.upperRowImg
+        console.log('Switch zu Bild')
+      } else {
+        this.currentRow = this.upperRowText
+        console.log('Switch zu Text')
+      }
+
+      if (keyCode === ENTER) {
+        state.currentLevel = this.selectedButton.level
+        state.currentPage = new Game()
+      }
     }
   }
 }
