@@ -1,58 +1,83 @@
-import { BasePage, Imprint } from './index.js'
-import { state } from '../index.js'
-import { ChooseMode } from './ChooseMode.js'
+import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
+import { state } from '../sketch.js'
 
 let colorsBW = [40, 255, 255, 255, 255]
 
-class Button {
-  constructor({ x, y }, Page) {
-    this.x = x
-    this.y = y
-    this.Page = Page
+class MenuButton {
+  constructor(TargetPage, drawOptions) {
+    this.TargetPage = TargetPage
+    this.drawOptions = drawOptions
   }
 
-  draw(activeButton) {
-    const isActive = activeButton === this
+  draw(isSelected) {
+    const { x, y, label } = this.drawOptions
 
+    // Button outline
     strokeWeight(8)
-    if (isActive) stroke(0, 255, 255)
+    if (isSelected) stroke(0, 255, 255)
     else stroke(255, 0, 255)
 
+    // Button background
     fill(0)
-    rect(this.x, this.y, 300, 75)
+    rectMode(CENTER)
+    rect(x, y, 300, 75)
+
+    // Button label
+    noStroke()
+    fill(255)
+    textSize(18)
+    textAlign(CENTER, TOP)
+    text(label, x, y - 7.5)
   }
 }
 
 export class Start extends BasePage {
+  header = null
+
   constructor() {
     super()
+    const xCenter = width / 2
+    const yFirstButton = 225 + 37.5
 
-    const startButton = new Button({ x: 428, y: 225 }, ChooseMode)
-    const helpButton = new Button({ x: 428, y: 350 }, Imprint)
-    const leaderboardButton = new Button({ x: 428, y: 475 }, Imprint)
+    const startButton = new MenuButton(ChooseMode, {
+      label: 'START',
+      x: xCenter,
+      y: yFirstButton,
+    })
+    const helpButton = new MenuButton(Help, {
+      label: 'HOW TO PLAY',
+      x: xCenter,
+      y: yFirstButton + 125,
+    })
+    const leaderboardButton = new MenuButton(Highscores, {
+      label: 'HIGHSCORES',
+      x: xCenter,
+      y: yFirstButton + 2 * 125,
+    })
 
     this.buttons = [startButton, helpButton, leaderboardButton]
-    this.activeButtonIndex = 0
+    this.currentIndex = 0
+  }
+
+  get selectedButton() {
+    return this.buttons[this.currentIndex]
   }
 
   draw() {
-    super.draw()
     // Styling der Startseite
     noStroke()
     fill(255, 255, 0)
     textSize(50)
     textAlign(LEFT, TOP)
     text('COLOR MASH', 328, 100)
+
     // Buttons rendern
-    const activeButton = this.buttons[this.activeButtonIndex]
-    this.buttons.forEach(button => button.draw(activeButton))
-    // Texte etc
-    noStroke()
-    fill(255)
-    textSize(18)
-    text('START', 533, 255)
-    text('HOW TO PLAY', 478.5, 380)
-    text('HIGHSCORES', 478.5, 505)
+    this.buttons.forEach(button => {
+      const isSelected = this.selectedButton === button
+      button.draw(isSelected)
+    })
+
+    // Hinweis auf Impressum
     textSize(10)
     textAlign(RIGHT, TOP)
     fill(random(colorsBW))
@@ -60,18 +85,20 @@ export class Start extends BasePage {
   }
 
   onKeyPress() {
-    const lastIsActive = this.activeButtonIndex === this.buttons.length - 1
-    const firstIsActive = this.activeButtonIndex === 0
+    if (key === 'i') state.currentPage = new Imprint()
 
-    if (keyCode === DOWN_ARROW && !lastIsActive) {
-      this.activeButtonIndex++
+    const lastIsSelected = this.currentIndex === this.buttons.length - 1
+    const firstIsSelected = this.currentIndex === 0
+
+    if (keyCode === DOWN_ARROW && !lastIsSelected) {
+      this.currentIndex++
     }
-    if (keyCode === UP_ARROW && !firstIsActive) {
-      this.activeButtonIndex--
+    if (keyCode === UP_ARROW && !firstIsSelected) {
+      this.currentIndex--
     }
     if (keyCode === ENTER) {
-      state.currentPage = new this.buttons[this.activeButtonIndex].Page()
+      const { TargetPage } = this.selectedButton
+      state.currentPage = new TargetPage()
     }
-    if (key == 'i') state.currentPage = new Imprint()
   }
 }

@@ -1,10 +1,46 @@
-// Basis-Template für einzelne Seiten mit variablem Inhalt
-import { HEADER_HEIGHT } from '../constants.js'
+import { state } from '../sketch.js'
+import { Header } from '../components/Header.js'
+import { Start } from './index.js'
 
 export class BasePage {
-  draw() {
+  header = new Header()
+
+  constructor() {
+    const originalDraw = this.draw.bind(this)
+    const originalOnKeyPress = this.onKeyPress.bind(this)
+
+    // Extend the draw method
+    function extendedDraw() {
+      this._drawBackground()
+      this._drawHeader()
+      originalDraw()
+    }
+    // Extend the keyPress method
+    function extendedOnKeyPress() {
+      this._handleEscapeToHome()
+      originalOnKeyPress()
+    }
+
+    this.draw = extendedDraw
+    this.onKeyPress = extendedOnKeyPress
+  }
+
+  draw() {}
+  onKeyPress() {}
+
+  // Private methods, used to extend certain core methods (see constructor)
+  _drawBackground() {
     noStroke()
     fill(40)
-    rect(0, 0, 1155, 650)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+  }
+  _drawHeader() {
+    if (this.header) this.header.draw()
+  }
+  _handleEscapeToHome() {
+    if (this.header && keyCode === ESCAPE) {
+      state.currentPage = new Start()
+    }
   }
 }

@@ -1,90 +1,108 @@
 import { BasePage, ChooseImage, Start } from './index.js'
-import { state, images } from '../index.js'
+import { state, images } from '../sketch.js'
 import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
 } from '../constants.js'
-import { Header } from '../components/header.js'
 
 class ModeButton {
-  constructor(mode, { x, y }) {
+  constructor(mode, drawOptions) {
     this.mode = mode
-    this.x = x
-    this.y = y
+    this.drawOptions = drawOptions
   }
 
-  draw(activeMode) {
-    const isActive = activeMode === this.mode
-    // Styling Buttons
+  draw(isSelected) {
+    const { x, y, label, icon } = this.drawOptions
+
+    // Button outline
     strokeWeight(8)
-    if (isActive) stroke(0, 255, 255)
+    if (isSelected) stroke(0, 255, 255)
     else stroke(255, 0, 255)
 
+    // Button background
     fill(0)
-    rect(this.x, this.y, 200, 200)
+    rectMode(CENTER)
+    rect(x, y, 200, 200)
+    rectMode(CORNER)
+
+    // Button label
+    noStroke()
+    fill(255)
+    textSize(18)
+    textAlign(CENTER, TOP)
+    text(label, x, y + 42)
+
+    // Button icon
+    imageMode(CENTER)
+    image(icon, x, y - 22.5)
   }
 }
 
 export class ChooseMode extends BasePage {
   constructor() {
     super()
-    this.header = new Header()
-    const arcadeMode = new ModeButton(GAME_MODE_ARCADE, { x: 227, y: 250 })
-    const timeMode = new ModeButton(GAME_MODE_TIMETRIAL, { x: 477, y: 250 })
-    const surviveMode = new ModeButton(GAME_MODE_SURVIVAL, { x: 727, y: 250 })
+    const xCenter = width / 2
 
-    this.modeButtons = [arcadeMode, timeMode, surviveMode]
-    this.activeModeButtonIndex = 0
+    const arcadeMode = new ModeButton(GAME_MODE_ARCADE, {
+      label: 'ARCADE',
+      icon: images.star,
+      x: xCenter - 250,
+      y: 350,
+    })
+    const timeMode = new ModeButton(GAME_MODE_TIMETRIAL, {
+      label: 'TIMETRIAL',
+      icon: images.clock,
+      x: xCenter,
+      y: 350,
+    })
+    const surviveMode = new ModeButton(GAME_MODE_SURVIVAL, {
+      label: 'SURVIVAL',
+      icon: images.heart,
+      x: xCenter + 250,
+      y: 350,
+    })
+
+    this.buttons = [arcadeMode, timeMode, surviveMode]
+    this.currentIndex = 0
   }
 
-  get activeModeButton() {
-    return this.modeButtons[this.activeModeButtonIndex]
+  get selectedButton() {
+    return this.buttons[this.currentIndex]
   }
-  get activeMode() {
-    return this.activeModeButton.mode
+  get selectedMode() {
+    return this.selectedButton.mode
   }
 
   draw() {
-    super.draw()
-    this.header.draw()
-    // Styling Title
+    // Styling von Titel usw.
     noStroke()
     fill(255)
     textSize(30)
     textAlign(CENTER, TOP)
     text('CHOOSE YOUR MODE', width / 2, 100)
+
     // Buttons rendern
-    this.modeButtons.forEach(mode => mode.draw(this.activeMode))
-    // Button Texte
-    noStroke()
-    fill(255)
-    textSize(18)
-    textAlign(LEFT, TOP)
-    text('ARCADE', 273, 392)
-    text('TIMETRIAL', 499, 392)
-    text('SURVIVAL', 755, 392)
-    // Bilder einbinden
-    image(images.star, 301.2, 300)
-    image(images.clock, 551, 300)
-    image(images.heart, 794, 300)
+    this.buttons.forEach(button => {
+      const isSelected = this.selectedButton === button
+      button.draw(isSelected)
+    })
   }
 
   onKeyPress() {
-    const lastIsActive =
-      this.activeModeButtonIndex === this.modeButtons.length - 1
-    const firstIsActive = this.activeModeButtonIndex === 0
+    const lastIsSelected = this.currentIndex === this.buttons.length - 1
+    const firstIsSelected = this.currentIndex === 0
 
-    if (keyCode === RIGHT_ARROW && !lastIsActive) {
-      this.activeModeButtonIndex++
+    if (keyCode === RIGHT_ARROW && !lastIsSelected) {
+      this.currentIndex++
     }
-    if (keyCode === LEFT_ARROW && !firstIsActive) {
-      this.activeModeButtonIndex--
+    if (keyCode === LEFT_ARROW && !firstIsSelected) {
+      this.currentIndex--
     }
+
     if (keyCode === ENTER) {
-      state.currentMode = this.activeModeButton.mode
+      state.currentMode = this.selectedButton.mode
       state.currentPage = new ChooseImage()
     }
-    if (keyCode == ESCAPE) state.currentPage = new Start()
   }
 }
