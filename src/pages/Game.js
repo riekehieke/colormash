@@ -8,7 +8,7 @@ import {
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 7
 
 class PixelTile {
   constructor(tile, index) {
@@ -44,23 +44,30 @@ class PixelTile {
 export class Game extends BasePage {
   currentIndex = -1
   time = 0
-  timer = 60000
-  timeRemaining = 60
+  timer = 300000
+  timeRemaining = 300
   errorCount = 0
+  score = 0
+  multiplier = 1
+  multiplierTime = 1
+  letterCount = 0
 
   constructor() {
     super()
+    const tileCount = ROW_SIZE ** 2
 
-    const level = state.currentLevel
-    const pixels = level.tiles.map((tile, index) => new PixelTile(tile, index))
+    let tiles = state.currentLevel.tiles
+    if (tiles.length > tileCount) tiles = tiles.slice(0, tileCount)
+
+    const pixels = tiles.map((tile, index) => new PixelTile(tile, index))
     const rows = createChunkedArray(pixels, ROW_SIZE)
 
-    this.level = level
+    this.tiles = tiles
     this.rows = rows
   }
 
   get nextTile() {
-    return this.level.tiles[this.currentIndex + 1]
+    return this.tiles[this.currentIndex + 1]
   }
 
   drawRow = (row, rowIndex, xCoord) => {
@@ -86,7 +93,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
   }
 
   drawTimetrial(xCoord) {
@@ -104,7 +111,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.timeRemaining.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
   }
 
   drawSurvival(xCoord) {
@@ -118,7 +125,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
 
     // Herzen für verfügbare Leben hier anzeigen
     imageMode(CENTER)
@@ -130,7 +137,7 @@ export class Game extends BasePage {
       image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
     if (this.errorCount >= 3) {
       state.result.time = (millis() - this.startTime) / 1000
-      state.result.score = '12345'
+      state.result.score = this.score
       state.result.hearts = 0
       state.result.status = 'GAME OVER'
       state.currentPage = new Result()
@@ -152,9 +159,26 @@ export class Game extends BasePage {
       if (this.timeRemaining <= 0) {
         state.result.time = this.timeRemaining
         state.result.status = 'GAME OVER'
-        state.result.score = 12345
+        state.result.score = this.score
         state.currentPage = new Result()
       }
+    }
+
+    // Multiplier anzeigen
+    if (this.multiplier === 2) {
+      fill(255, 0, 255)
+      textSize(40)
+      text('x2', width - 100, 370)
+    }
+    if (this.multiplier === 3) {
+      fill(0, 255, 255)
+      textSize(45)
+      text('x3', width - 100, 370)
+    }
+    if (this.multiplier === 4) {
+      fill(255, 255, 0)
+      textSize(50)
+      text('x4', width - 100, 370)
     }
   }
 
@@ -162,21 +186,46 @@ export class Game extends BasePage {
     if (!this.startTime) this.startTime = millis()
 
     const nextKey = this.nextTile.key
-    if (key === nextKey) this.currentIndex++
-    else this.errorCount++
-
+    if (key.toLowerCase() === nextKey) {
+      this.currentIndex++
+      this.letterCount++
+      // Multiplier berechnen
+      if (this.letterCount > 10) this.multiplier = 2
+      if (this.letterCount > 20) this.multiplier = 3
+      if (this.letterCount > 30) this.multiplier = 4
+      // Score berechnen
+      this.score += 50 * this.multiplier
+    } else if (keyCode !== SHIFT) {
+      this.errorCount++
+      this.letterCount = 0
+      this.multiplier = 1
+    }
     if (!this.nextTile) {
+      // Perfektes Spiel Bonuspunkte
+      if (this.errorCount === 0) this.score += 48200
+      // Zeit Mulitplier
+      if (state.currentMode !== GAME_MODE_TIMETRIAL) {
+        let timeBefore = (millis() - this.startTime) / 1000
+        if (timeBefore / 32 > 25) this.multiplierTime = 1
+        if (timeBefore / 32 <= 20) this.multiplierTime = 2
+        if (timeBefore / 32 <= 15) this.multiplierTime = 3
+        if (timeBefore / 32 <= 10) this.multiplierTime = 4
+      }
+      // Ergebnisse speichern
       state.result.time = (millis() - this.startTime) / 1000
-
-      state.result.status = 'SUCCESS'
-      state.result.score = 12345
-      // Survival Mode
+      state.result.status = 'YOU WIN'
+      // Zusätzlich für Survival Mode
       state.result.hearts = 3 - this.errorCount
-
       // Timetrial Mode
-      if (state.currentMode === GAME_MODE_TIMETRIAL)
+      if (state.currentMode === GAME_MODE_TIMETRIAL) {
+        let timeBefore = 300 - this.timeRemaining
+        if (timeBefore / 32 > 10) this.multiplierTime = 1
+        if (timeBefore / 32 <= 7) this.multiplierTime = 2
+        if (timeBefore / 32 <= 5) this.multiplierTime = 3
+        if (timeBefore / 32 <= 3) this.multiplierTime = 4
         state.result.time = this.timeRemaining
-
+      }
+      state.result.score = this.score * this.multiplierTime
       state.currentPage = new Result()
     }
   }
