@@ -24,6 +24,9 @@ export function preload() {
   images.star = loadImage('./src/assets/images/star.png')
   images.clock = loadImage('./src/assets/images/clock.png')
   images.heart = loadImage('./src/assets/images/heart.png')
+  images.starHelp = loadImage('./src/assets/images/star_help.png')
+  images.clockHelp = loadImage('./src/assets/images/clock_help.png')
+  images.heartHelp = loadImage('./src/assets/images/heart_help.png')
   images.background = loadImage('./src/assets/images/background.png')
   images.placeholder = loadImage('./src/assets/images/placeholder.png')
 }
