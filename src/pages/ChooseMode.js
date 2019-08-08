@@ -6,6 +6,8 @@ import {
   GAME_MODE_SURVIVAL,
 } from '../constants.js'
 
+let colorsBlue = [200, 0, 0, 0, 0]
+
 class ModeButton {
   constructor(mode, drawOptions) {
     this.mode = mode
@@ -17,7 +19,7 @@ class ModeButton {
 
     // Button outline
     strokeWeight(8)
-    if (isSelected) stroke(0, 255, 255)
+    if (isSelected) stroke(random(colorsBlue), 255, 255)
     else stroke(255, 0, 255)
 
     // Button background

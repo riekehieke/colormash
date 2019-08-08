@@ -1,4 +1,4 @@
-import { state } from '../sketch.js'
+import { state, images } from '../sketch.js'
 import { Header } from '../components/Header.js'
 import { Start } from './index.js'
 
@@ -30,10 +30,12 @@ export class BasePage {
 
   // Private methods, used to extend certain core methods (see constructor)
   _drawBackground() {
-    noStroke()
-    fill(40)
-    rectMode(CORNER)
-    rect(0, 0, width, height)
+    imageMode(CORNER)
+    image(images.background, 0, 0)
+    // noStroke()
+    // fill(40)
+    // rectMode(CORNER)
+    // rect(0, 0, width, height)
   }
   _drawHeader() {
     if (this.header) this.header.draw()
