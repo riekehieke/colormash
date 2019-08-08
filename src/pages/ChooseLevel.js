@@ -175,7 +175,14 @@ export class ChooseLevel extends BasePage {
     fill(255)
     textSize(30)
     textAlign(CENTER, TOP)
-    text('CHOOSE YOUR LEVEL', width / 2, 100)
+    if (
+      this.currentRow === this.upperRowImg ||
+      this.currentRow === this.lowerRowImg
+    ) {
+      text('CHOOSE YOUR IMAGE', width / 2, 100)
+    } else {
+      text('CHOOSE YOUR TEXT', width / 2, 100)
+    }
 
     // Switch Text
     textSize(10)
@@ -243,10 +250,8 @@ export class ChooseLevel extends BasePage {
         this.currentRow !== this.lowerRowImg
       ) {
         this.currentRow = this.upperRowImg
-        console.log('Switch zu Bild')
       } else {
         this.currentRow = this.upperRowText
-        console.log('Switch zu Text')
       }
 
       if (keyCode === ENTER) {
