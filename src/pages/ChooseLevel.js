@@ -2,24 +2,25 @@ import { BasePage, Game } from './index.js'
 import { state, images } from '../sketch.js'
 import * as LEVELS from '../levels/index.js'
 import { colorsBW, colorsBlue } from '../constants.js'
-import { createChunkedArray } from '../utils.js'
+import { createChunkedArray, buildImageFromTiles } from '../utils.js'
 
 const allLevels = Object.values(LEVELS)
 
 class LevelButton {
   constructor(level) {
     this.level = level
+    if (level.mode !== 'text') this.picture = buildImageFromTiles(level.tiles)
   }
 
   draw(drawOptions) {
-    const { x, y, showText, showImage, isSelected } = drawOptions
+    const { x, y, isSelected } = drawOptions
+    const { level, picture } = this
 
     // Button icon
-    if (showImage) {
+    if (level.mode !== 'text') {
+      noSmooth()
       imageMode(CENTER)
-      // TODO: Richtiges Thumbnail generieren
-      const icon = images.placeholderImg
-      image(icon, x, y)
+      image(picture || images.placeholderImg, x, y, 130, 130)
     }
 
     // Button outline
@@ -28,19 +29,18 @@ class LevelButton {
     else stroke(255, 0, 255)
 
     // Button background
-    const rgb = showText ? [0] : [0, 0, 0, 0]
-    fill(...rgb)
+    fill(level.mode === 'text' ? 0 : color(0, 0, 0, 0))
     rectMode(CENTER, TOP)
     rect(x, y, 138, 138)
     rectMode(CORNER)
 
     // Button label
-    if (showText) {
+    if (level.mode === 'text') {
       noStroke()
       fill(255)
       textSize(10)
       textAlign(CENTER, TOP)
-      const name = this.level.name || ''
+      const name = level.name || ''
       text(name.toUpperCase(), x, y - 9)
     }
   }

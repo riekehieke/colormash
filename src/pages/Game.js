@@ -17,7 +17,7 @@ class PixelTile {
   }
 
   draw(drawOptions) {
-    const { color, key } = this.tile
+    const { color, key, keyText } = this.tile
     const { x, y, isRevealed } = drawOptions
 
     if (!isRevealed) {
@@ -25,8 +25,7 @@ class PixelTile {
       stroke(255)
     } else noStroke()
 
-    const rgb = isRevealed ? color : [0]
-    fill(...rgb)
+    fill(isRevealed ? color : 0)
 
     rectMode(CENTER)
     rect(x, y, TILE_SIZE, TILE_SIZE)
@@ -36,7 +35,7 @@ class PixelTile {
       noStroke()
       fill(255)
       textAlign(CENTER, CENTER)
-      text(key.toUpperCase(), x + 1, y + 1)
+      text((keyText || key).toUpperCase(), x + 1, y + 1)
     }
   }
 }
