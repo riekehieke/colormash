@@ -253,11 +253,10 @@ export class ChooseLevel extends BasePage {
       } else {
         this.currentRow = this.upperRowText
       }
-
-      if (keyCode === ENTER) {
-        state.currentLevel = this.selectedButton.level
-        state.currentPage = new Game()
-      }
+    }
+    if (keyCode === ENTER) {
+      state.currentLevel = this.selectedButton.level
+      state.currentPage = new Game()
     }
   }
 }
