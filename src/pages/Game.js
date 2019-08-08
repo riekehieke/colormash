@@ -1,10 +1,15 @@
-import { state } from '../sketch.js'
+import { state, images } from '../sketch.js'
 import { BasePage, Success } from './index.js'
-import { LETTERS } from '../constants.js'
+import {
+  LETTERS,
+  GAME_MODE_ARCADE,
+  GAME_MODE_TIMETRIAL,
+  GAME_MODE_SURVIVAL,
+} from '../constants.js'
 import { createChunkedArray } from '../utils.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 1
+const ROW_SIZE = 32
 
 // TODO: Level aus Auswahl auslesen
 const getLevel = () => {
@@ -45,6 +50,8 @@ class PixelTile {
 export class Game extends BasePage {
   currentIndex = -1
   time = 0
+  timer = 60000
+  timeRemaining = 60
 
   constructor() {
     super()
@@ -73,10 +80,7 @@ export class Game extends BasePage {
     )
   }
 
-  draw() {
-    const xCoord = width / 2 - ((TILE_SIZE - 1) * ROW_SIZE) / 2
-    // Spielbrett
-    this.rows.forEach((row, index) => this.drawRow(row, index, xCoord))
+  drawArcade(xCoord) {
     // Stoppuhr
     if (this.startTime) this.time = (millis() - this.startTime) / 1000
     // Zeit
@@ -88,6 +92,55 @@ export class Game extends BasePage {
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
     text('12345', width - xCoord / 2, 335)
+  }
+
+  drawTimetrial(xCoord) {
+    // Timer
+    if (this.startTime) {
+      let spielzeit = millis() - this.startTime
+      this.timeRemaining = (this.timer - spielzeit) / 1000
+    }
+
+    // Zeit
+    fill(255)
+    textAlign(CENTER, TOP)
+    textSize(20)
+    text('TIME LEFT', xCoord / 2, 285)
+    text('SCORE', width - xCoord / 2, 285)
+    textSize(30)
+    text(this.timeRemaining.toFixed(2), xCoord / 2, 335)
+    text('12345', width - xCoord / 2, 335)
+  }
+
+  drawSurvival(xCoord) {
+    // Stoppuhr
+    if (this.startTime) this.time = (millis() - this.startTime) / 1000
+    // Zeit
+    fill(255)
+    textAlign(CENTER, TOP)
+    textSize(20)
+    text('TIME', xCoord / 2, 285)
+    text('SCORE', width - xCoord / 2, 285)
+    textSize(30)
+    text(this.time.toFixed(2), xCoord / 2, 335)
+    text('12345', width - xCoord / 2, 335)
+
+    // Herzen für verfügbare Leben hier anzeigen
+    imageMode(CENTER)
+    image(images.heartFilled, width / 2, 55, 22.3, 18.3)
+    image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
+    image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+  }
+
+  draw() {
+    const xCoord = width / 2 - ((TILE_SIZE - 0.5) * ROW_SIZE) / 2
+    // Spielbrett
+    this.rows.forEach((row, index) => this.drawRow(row, index, xCoord))
+
+    // Spielbrett je nach Modus anpassen
+    if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade(xCoord)
+    if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial(xCoord)
+    if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival(xCoord)
   }
 
   onKeyPress() {
