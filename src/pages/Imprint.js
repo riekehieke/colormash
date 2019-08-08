@@ -1,15 +1,7 @@
-import { BasePage, Start } from './index.js'
-import { Header } from '../components/Header.js'
-import { state } from '../index.js'
+import { BasePage } from './index.js'
 
 export class Imprint extends BasePage {
-  constructor() {
-    super()
-    this.header = new Header()
-  }
   draw() {
-    super.draw()
-    this.header.draw()
     noStroke()
     fill(255)
     textSize(30)
@@ -25,8 +17,5 @@ Hier kommt das Impressum hin.`,
       width / 2,
       180,
     )
-  }
-  onKeyPress() {
-    if (keyCode == ESCAPE) state.currentPage = new Start()
   }
 }

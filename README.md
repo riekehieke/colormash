@@ -1,3 +1,3 @@
 <h1 align=center>colormash</h1>
 <br>
-<p>Some fun stuff...</p>
+<p align=center><img src="https://media.giphy.com/media/sIIhZliB2McAo/giphy.gif"></p>
