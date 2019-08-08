@@ -1,6 +1,6 @@
 /// <reference path="../globals.d.ts" />
 
-import { Start, ChooseMode } from './pages/index.js'
+import { Start } from './pages/index.js'
 
 export const state = {
   currentPage: null,

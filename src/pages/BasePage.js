@@ -9,13 +9,13 @@ export class BasePage {
     const originalDraw = this.draw.bind(this)
     const originalOnKeyPress = this.onKeyPress.bind(this)
 
-    // Extend the draw method
+    // Draw methode erweitern, sodass immer Background & Header geupdated werden
     function extendedDraw() {
       this._drawBackground()
       this._drawHeader()
       originalDraw()
     }
-    // Extend the keyPress method
+    // OnKeyPress Methode erweitern, sodass globale Escape-Navigation funktioniert
     function extendedOnKeyPress() {
       this._handleEscapeToHome()
       originalOnKeyPress()
@@ -28,14 +28,10 @@ export class BasePage {
   draw() {}
   onKeyPress() {}
 
-  // Private methods, used to extend certain core methods (see constructor)
+  // Private Methoden, die Grundmethoden wie draw oder onKeyPress erweitern (siehe constructor)
   _drawBackground() {
     imageMode(CORNER)
     image(images.background, 0, 0)
-    // noStroke()
-    // fill(40)
-    // rectMode(CORNER)
-    // rect(0, 0, width, height)
   }
   _drawHeader() {
     if (this.header) this.header.draw()
