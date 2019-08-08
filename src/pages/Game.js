@@ -1,5 +1,5 @@
 import { state, images } from '../sketch.js'
-import { BasePage, Success } from './index.js'
+import { BasePage, Result } from './index.js'
 import {
   LETTERS,
   GAME_MODE_ARCADE,
@@ -9,7 +9,7 @@ import {
 import { createChunkedArray } from '../utils.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 1
 
 // TODO: Level aus Auswahl auslesen
 const getLevel = () => {
@@ -151,7 +151,7 @@ export class Game extends BasePage {
 
     if (!this.nextTile) {
       const finalTime = millis() - this.startTime
-      state.currentPage = new Success()
+      state.currentPage = new Result()
     }
   }
 }
