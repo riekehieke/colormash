@@ -25,6 +25,7 @@ export function preload() {
   images.clock = loadImage('./src/assets/images/clock.png')
   images.heart = loadImage('./src/assets/images/heart.png')
   images.background = loadImage('./src/assets/images/background.png')
+  images.placeholder = loadImage('./src/assets/images/placeholder.png')
 }
 
 export function setup() {
