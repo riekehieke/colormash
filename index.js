@@ -1,6 +1,6 @@
 import { preload, setup, draw, keyPressed } from './src/sketch.js'
 
-// Expose functions globally so p5.js can find them
+// Funktionen global verfügbar machen, sodass p5.js sie finden & ausführen kann
 window.preload = preload
 window.setup = setup
 window.draw = draw
