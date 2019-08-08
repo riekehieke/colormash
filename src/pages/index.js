@@ -1,4 +1,4 @@
-export { BasePage } from './_BasePage.js'
+export { BasePage } from './BasePage.js'
 
 export { Start } from './Start.js'
 export { ChooseMode } from './ChooseMode.js'
