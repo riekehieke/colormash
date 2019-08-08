@@ -6,6 +6,11 @@ export const state = {
   currentPage: null,
   currentMode: null,
   currentImage: null,
+  highscores: {
+    arcade: [12345, 465645, 345445, 3424543, 3326, 34564567],
+    timetrial: [473895, 472772],
+    survival: [488283, 27374],
+  },
 }
 
 export const images = {}
@@ -19,6 +24,7 @@ export function preload() {
   images.star = loadImage('./src/assets/images/star.png')
   images.clock = loadImage('./src/assets/images/clock.png')
   images.heart = loadImage('./src/assets/images/heart.png')
+  images.background = loadImage('./src/assets/images/background.png')
 }
 
 export function setup() {
