@@ -11,6 +11,12 @@ export const state = {
     timetrial: [473895, 472772],
     survival: [488283, 27374],
   },
+  result: {
+    time: null,
+    score: null,
+    status: null,
+    hearts: null,
+  },
 }
 
 export const images = {}

@@ -9,7 +9,7 @@ import {
 import { createChunkedArray } from '../utils.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 1
+const ROW_SIZE = 3
 
 // TODO: Level aus Auswahl auslesen
 const getLevel = () => {
@@ -52,6 +52,7 @@ export class Game extends BasePage {
   time = 0
   timer = 60000
   timeRemaining = 60
+  errorCount = 0
 
   constructor() {
     super()
@@ -127,9 +128,19 @@ export class Game extends BasePage {
 
     // Herzen für verfügbare Leben hier anzeigen
     imageMode(CENTER)
-    image(images.heartFilled, width / 2, 55, 22.3, 18.3)
-    image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
-    image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+    if (this.errorCount === 0)
+      image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+    if (this.errorCount <= 1)
+      image(images.heartFilled, width / 2, 55, 22.3, 18.3)
+    if (this.errorCount <= 2)
+      image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
+    if (this.errorCount >= 3) {
+      state.result.time = (millis() - this.startTime) / 1000
+      state.result.score = '12345'
+      state.result.hearts = 0
+      state.result.status = 'GAME OVER'
+      state.currentPage = new Result()
+    }
   }
 
   draw() {
@@ -141,6 +152,16 @@ export class Game extends BasePage {
     if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade(xCoord)
     if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial(xCoord)
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival(xCoord)
+
+    // Timetrial: Game Over wenn Zeit abgelaufen
+    if (state.currentMode === GAME_MODE_TIMETRIAL) {
+      if (this.timeRemaining <= 0) {
+        state.result.time = this.timeRemaining
+        state.result.status = 'GAME OVER'
+        state.result.score = 12345
+        state.currentPage = new Result()
+      }
+    }
   }
 
   onKeyPress() {
@@ -148,9 +169,20 @@ export class Game extends BasePage {
 
     const nextKey = this.nextTile.key
     if (key === nextKey) this.currentIndex++
+    else this.errorCount++
 
     if (!this.nextTile) {
-      const finalTime = millis() - this.startTime
+      state.result.time = (millis() - this.startTime) / 1000
+
+      state.result.status = 'SUCCESS'
+      state.result.score = 12345
+      // Survival Mode
+      state.result.hearts = 3 - this.errorCount
+
+      // Timetrial Mode
+      if (state.currentMode === GAME_MODE_TIMETRIAL)
+        state.result.time = this.timeRemaining
+
       state.currentPage = new Result()
     }
   }

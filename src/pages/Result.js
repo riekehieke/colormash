@@ -16,8 +16,8 @@ export class Result extends BasePage {
     text('TIME', posLeft, 285)
     text('SCORE', posRight, 285)
     textSize(30)
-    text('00.00', posLeft, 335)
-    text('12345', posRight, 335)
+    text(state.result.time.toFixed(2), posLeft, 335)
+    text(state.result.score, posRight, 335)
   }
   drawTimetrial() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
@@ -28,8 +28,8 @@ export class Result extends BasePage {
     text('TIME LEFT', posLeft, 285)
     text('SCORE', posRight, 285)
     textSize(30)
-    text('03.34', posLeft, 335)
-    text('12345', posRight, 335)
+    text(state.result.time.toFixed(2), posLeft, 335)
+    text(state.result.score, posRight, 335)
   }
   drawSurvival() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
@@ -40,14 +40,17 @@ export class Result extends BasePage {
     text('TIME', posLeft, 285)
     text('SCORE', posRight, 285)
     textSize(30)
-    text('00.00', posLeft, 335)
-    text('12345', posRight, 335)
+    text(state.result.time.toFixed(2), posLeft, 335)
+    text(state.result.score, posRight, 335)
 
     // Herzen für verfügbare Leben hier anzeigen
     imageMode(CENTER)
-    image(images.heartFilled, width / 2, 55, 22.3, 18.3)
-    image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
-    image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+    if (state.result.hearts >= 1)
+      image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
+    if (state.result.hearts >= 2)
+      image(images.heartFilled, width / 2, 55, 22.3, 18.3)
+    if (state.result.hearts === 3)
+      image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
   }
   draw() {
     // Hier dann am Ende das richtige (ausgemalte) Bild
@@ -63,7 +66,7 @@ export class Result extends BasePage {
     textAlign(CENTER, CENTER)
     textSize(30)
     fill(255, 0, 255)
-    text('YOU WIN', 578, 325)
+    text(state.result.status, 578, 325)
     if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade()
     if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial()
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival()
