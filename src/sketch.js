@@ -11,6 +11,12 @@ export const state = {
     timetrial: [473895, 472772],
     survival: [488283, 27374],
   },
+  result: {
+    time: null,
+    score: null,
+    status: null,
+    hearts: null,
+  },
 }
 
 export const images = {}
@@ -27,6 +33,7 @@ export function preload() {
   images.starHelp = loadImage('./src/assets/images/star_help.png')
   images.clockHelp = loadImage('./src/assets/images/clock_help.png')
   images.heartHelp = loadImage('./src/assets/images/heart_help.png')
+  images.heartFilled = loadImage('./src/assets/images/heart_filled.png')
   images.background = loadImage('./src/assets/images/background.png')
   images.placeholderImg = loadImage('./src/assets/images/placeholder_img.png')
   images.placeholderText = loadImage('./src/assets/images/placeholder_text.png')
