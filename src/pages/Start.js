@@ -2,6 +2,7 @@ import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
 import { state } from '../sketch.js'
 
 let colorsBW = [40, 255, 255, 255, 255]
+let colorsBlue = [200, 0, 0, 0, 0]
 
 class MenuButton {
   constructor(TargetPage, drawOptions) {
@@ -14,7 +15,7 @@ class MenuButton {
 
     // Button outline
     strokeWeight(8)
-    if (isSelected) stroke(0, 255, 255)
+    if (isSelected) stroke(random(colorsBlue), 255, 255)
     else stroke(255, 0, 255)
 
     // Button background
