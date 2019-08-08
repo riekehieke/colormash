@@ -15,8 +15,9 @@ class HighscoreColumn {
     noStroke()
     textAlign(CENTER, TOP)
     textSize(18)
-    if (!this.drawOptions.noSort)
+    if (!this.drawOptions.noSort) {
       this.values = this.values.sort((a, b) => b - a)
+    }
     this.values.filter(showOnlyFirstFive).forEach((value, i) => {
       text(value, this.drawOptions.x, this.drawOptions.y + 68 * i)
     })

@@ -1,20 +1,14 @@
 import { state, images } from '../sketch.js'
 import { BasePage, Result } from './index.js'
+import { createChunkedArray } from '../utils.js'
 import {
-  LETTERS,
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
 } from '../constants.js'
-import { createChunkedArray } from '../utils.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 3
-
-// TODO: Level aus Auswahl auslesen
-const getLevel = () => {
-  return [...Array(ROW_SIZE ** 2)].map(() => random(Object.values(LETTERS)))
-}
+const ROW_SIZE = 32
 
 class PixelTile {
   constructor(tile, index) {
@@ -57,8 +51,8 @@ export class Game extends BasePage {
   constructor() {
     super()
 
-    const level = getLevel()
-    const pixels = level.map((tile, index) => new PixelTile(tile, index))
+    const level = state.currentLevel
+    const pixels = level.tiles.map((tile, index) => new PixelTile(tile, index))
     const rows = createChunkedArray(pixels, ROW_SIZE)
 
     this.level = level
@@ -66,7 +60,7 @@ export class Game extends BasePage {
   }
 
   get nextTile() {
-    return this.level[this.currentIndex + 1]
+    return this.level.tiles[this.currentIndex + 1]
   }
 
   drawRow = (row, rowIndex, xCoord) => {

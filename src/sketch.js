@@ -5,7 +5,7 @@ import { Start } from './pages/index.js'
 export const state = {
   currentPage: null,
   currentMode: null,
-  currentImage: null,
+  currentLevel: null,
   highscores: {
     arcade: [12345, 465645, 345445, 3424543, 3326, 34564567],
     timetrial: [473895, 472772],
@@ -19,7 +19,17 @@ export const state = {
   },
 }
 
-export const images = {}
+export const images = {
+  star: null,
+  clock: null,
+  heart: null,
+  starHelp: null,
+  clockHelp: null,
+  heartHelp: null,
+  background: null,
+  placeholderImg: null,
+  nyan: null,
+}
 
 // Fonts
 let pressStart2P
@@ -36,7 +46,6 @@ export function preload() {
   images.heartFilled = loadImage('./src/assets/images/heart_filled.png')
   images.background = loadImage('./src/assets/images/background.png')
   images.placeholderImg = loadImage('./src/assets/images/placeholder_img.png')
-  images.placeholderText = loadImage('./src/assets/images/placeholder_text.png')
   images.nyan = loadImage('./src/assets/images/nyan.png')
 }
 
