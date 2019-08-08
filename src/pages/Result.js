@@ -18,6 +18,19 @@ export class Result extends BasePage {
     textSize(30)
     text(state.result.time.toFixed(2), posLeft, 335)
     text(state.result.score, posRight, 335)
+    // Banner mit Sternen
+    noStroke()
+    fill(0, 255, 255)
+    rect(578, 325, 300, 200)
+    textAlign(CENTER, CENTER)
+    textSize(30)
+    fill(255, 0, 255)
+    text(state.result.status, 578, 290)
+    // Sterne
+    imageMode(CENTER)
+    if (state.result.score >= 100000) image(images.starFilled, 578 - 100, 350)
+    if (state.result.score >= 300000) image(images.starFilled, 578, 350)
+    if (state.result.score >= 800000) image(images.starFilled, 578 + 100, 350)
   }
   drawTimetrial() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
@@ -59,14 +72,16 @@ export class Result extends BasePage {
     fill(0)
     rect(width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
 
-    // Congratulations/Game Over
-    noStroke()
-    fill(0, 255, 255)
-    rect(578, 325, 300, 200)
-    textAlign(CENTER, CENTER)
-    textSize(30)
-    fill(255, 0, 255)
-    text(state.result.status, 578, 325)
+    // You Win/Game Over
+    if (state.currentMode !== GAME_MODE_ARCADE) {
+      noStroke()
+      fill(0, 255, 255)
+      rect(578, 325, 300, 200)
+      textAlign(CENTER, CENTER)
+      textSize(30)
+      fill(255, 0, 255)
+      text(state.result.status, 578, 325)
+    }
     if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade()
     if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial()
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival()

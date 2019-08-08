@@ -8,7 +8,7 @@ import {
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 7
 
 class PixelTile {
   constructor(tile, index) {
@@ -44,26 +44,30 @@ class PixelTile {
 export class Game extends BasePage {
   currentIndex = -1
   time = 0
-  timer = 60000
-  timeRemaining = 60
+  timer = 300000
+  timeRemaining = 300
   errorCount = 0
   score = 0
   multiplier = 1
+  multiplierTime = 1
   letterCount = 0
 
   constructor() {
     super()
+    const tileCount = ROW_SIZE ** 2
 
-    const level = state.currentLevel
-    const pixels = level.tiles.map((tile, index) => new PixelTile(tile, index))
+    let tiles = state.currentLevel.tiles
+    if (tiles.length > tileCount) tiles = tiles.slice(0, tileCount)
+
+    const pixels = tiles.map((tile, index) => new PixelTile(tile, index))
     const rows = createChunkedArray(pixels, ROW_SIZE)
 
-    this.level = level
+    this.tiles = tiles
     this.rows = rows
   }
 
   get nextTile() {
-    return this.level.tiles[this.currentIndex + 1]
+    return this.tiles[this.currentIndex + 1]
   }
 
   drawRow = (row, rowIndex, xCoord) => {
@@ -159,6 +163,23 @@ export class Game extends BasePage {
         state.currentPage = new Result()
       }
     }
+
+    // Multiplier anzeigen
+    if (this.multiplier === 2) {
+      fill(255, 0, 255)
+      textSize(40)
+      text('x2', width - 100, 370)
+    }
+    if (this.multiplier === 3) {
+      fill(0, 255, 255)
+      textSize(45)
+      text('x3', width - 100, 370)
+    }
+    if (this.multiplier === 4) {
+      fill(255, 255, 0)
+      textSize(50)
+      text('x4', width - 100, 370)
+    }
   }
 
   onKeyPress() {
@@ -169,31 +190,42 @@ export class Game extends BasePage {
       this.currentIndex++
       this.letterCount++
       // Multiplier berechnen
-      if (this.letterCount <= 10) this.multiplier = 1
       if (this.letterCount > 10) this.multiplier = 2
       if (this.letterCount > 20) this.multiplier = 3
       if (this.letterCount > 30) this.multiplier = 4
-      console.log('Multiplier:' + this.multiplier)
-      console.log('letterCount:' + this.letterCount)
-      console.log('errorCount: ' + this.errorCount)
+      // Score berechnen
       this.score += 50 * this.multiplier
     } else if (keyCode !== SHIFT) {
       this.errorCount++
       this.letterCount = 0
+      this.multiplier = 1
     }
     if (!this.nextTile) {
-      state.result.time = (millis() - this.startTime) / 1000
-
-      state.result.status = 'SUCCESS'
+      // Perfektes Spiel Bonuspunkte
       if (this.errorCount === 0) this.score += 48200
-      state.result.score = this.score
-      // Survival Mode
+      // Zeit Mulitplier
+      if (state.currentMode !== GAME_MODE_TIMETRIAL) {
+        let timeBefore = (millis() - this.startTime) / 1000
+        if (timeBefore / 32 > 25) this.multiplierTime = 1
+        if (timeBefore / 32 <= 20) this.multiplierTime = 2
+        if (timeBefore / 32 <= 15) this.multiplierTime = 3
+        if (timeBefore / 32 <= 10) this.multiplierTime = 4
+      }
+      // Ergebnisse speichern
+      state.result.time = (millis() - this.startTime) / 1000
+      state.result.status = 'YOU WIN'
+      // Zusätzlich für Survival Mode
       state.result.hearts = 3 - this.errorCount
-
       // Timetrial Mode
-      if (state.currentMode === GAME_MODE_TIMETRIAL)
+      if (state.currentMode === GAME_MODE_TIMETRIAL) {
+        let timeBefore = 300 - this.timeRemaining
+        if (timeBefore / 32 > 10) this.multiplierTime = 1
+        if (timeBefore / 32 <= 7) this.multiplierTime = 2
+        if (timeBefore / 32 <= 5) this.multiplierTime = 3
+        if (timeBefore / 32 <= 3) this.multiplierTime = 4
         state.result.time = this.timeRemaining
-
+      }
+      state.result.score = this.score * this.multiplierTime
       state.currentPage = new Result()
     }
   }
