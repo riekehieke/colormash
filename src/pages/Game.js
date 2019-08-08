@@ -47,6 +47,9 @@ export class Game extends BasePage {
   timer = 60000
   timeRemaining = 60
   errorCount = 0
+  score = 0
+  multiplier = 1
+  letterCount = 0
 
   constructor() {
     super()
@@ -86,7 +89,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
   }
 
   drawTimetrial(xCoord) {
@@ -104,7 +107,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.timeRemaining.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
   }
 
   drawSurvival(xCoord) {
@@ -118,7 +121,7 @@ export class Game extends BasePage {
     text('SCORE', width - xCoord / 2, 285)
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
-    text('12345', width - xCoord / 2, 335)
+    text(this.score, width - xCoord / 2, 335)
 
     // Herzen für verfügbare Leben hier anzeigen
     imageMode(CENTER)
@@ -130,7 +133,7 @@ export class Game extends BasePage {
       image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
     if (this.errorCount >= 3) {
       state.result.time = (millis() - this.startTime) / 1000
-      state.result.score = '12345'
+      state.result.score = this.score
       state.result.hearts = 0
       state.result.status = 'GAME OVER'
       state.currentPage = new Result()
@@ -152,7 +155,7 @@ export class Game extends BasePage {
       if (this.timeRemaining <= 0) {
         state.result.time = this.timeRemaining
         state.result.status = 'GAME OVER'
-        state.result.score = 12345
+        state.result.score = this.score
         state.currentPage = new Result()
       }
     }
@@ -162,14 +165,28 @@ export class Game extends BasePage {
     if (!this.startTime) this.startTime = millis()
 
     const nextKey = this.nextTile.key
-    if (key.toLowerCase() === nextKey) this.currentIndex++
-    else if (keyCode !== SHIFT) this.errorCount++
-
+    if (key.toLowerCase() === nextKey) {
+      this.currentIndex++
+      this.letterCount++
+      // Multiplier berechnen
+      if (this.letterCount <= 10) this.multiplier = 1
+      if (this.letterCount > 10) this.multiplier = 2
+      if (this.letterCount > 20) this.multiplier = 3
+      if (this.letterCount > 30) this.multiplier = 4
+      console.log('Multiplier:' + this.multiplier)
+      console.log('letterCount:' + this.letterCount)
+      console.log('errorCount: ' + this.errorCount)
+      this.score += 50 * this.multiplier
+    } else if (keyCode !== SHIFT) {
+      this.errorCount++
+      this.letterCount = 0
+    }
     if (!this.nextTile) {
       state.result.time = (millis() - this.startTime) / 1000
 
       state.result.status = 'SUCCESS'
-      state.result.score = 12345
+      if (this.errorCount === 0) this.score += 48200
+      state.result.score = this.score
       // Survival Mode
       state.result.hearts = 3 - this.errorCount
 
