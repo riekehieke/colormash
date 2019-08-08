@@ -17,7 +17,7 @@ class PixelTile {
   }
 
   draw(drawOptions) {
-    const { color, key } = this.tile
+    const { color, key, keyText } = this.tile
     const { x, y, isRevealed } = drawOptions
 
     if (!isRevealed) {
@@ -25,8 +25,7 @@ class PixelTile {
       stroke(255)
     } else noStroke()
 
-    const rgb = isRevealed ? color : [0]
-    fill(...rgb)
+    fill(isRevealed ? color : 0)
 
     rectMode(CENTER)
     rect(x, y, TILE_SIZE, TILE_SIZE)
@@ -36,7 +35,7 @@ class PixelTile {
       noStroke()
       fill(255)
       textAlign(CENTER, CENTER)
-      text(key.toUpperCase(), x + 1, y + 1)
+      text((keyText || key).toUpperCase(), x + 1, y + 1)
     }
   }
 }
@@ -50,17 +49,20 @@ export class Game extends BasePage {
 
   constructor() {
     super()
+    const tileCount = ROW_SIZE ** 2
 
-    const level = state.currentLevel
-    const pixels = level.tiles.map((tile, index) => new PixelTile(tile, index))
+    let tiles = state.currentLevel.tiles
+    if (tiles.length > tileCount) tiles = tiles.slice(0, tileCount)
+
+    const pixels = tiles.map((tile, index) => new PixelTile(tile, index))
     const rows = createChunkedArray(pixels, ROW_SIZE)
 
-    this.level = level
+    this.tiles = tiles
     this.rows = rows
   }
 
   get nextTile() {
-    return this.level.tiles[this.currentIndex + 1]
+    return this.tiles[this.currentIndex + 1]
   }
 
   drawRow = (row, rowIndex, xCoord) => {

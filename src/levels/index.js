@@ -30,12 +30,10 @@ export const LEVEL_AN_DIE_FREUDE = {
   tiles: createTilesFromText(textAnDieFreude),
 }
 
-// ! Temporäre level zu Demo-Zwecken:
-
-export const FOO = LEVEL_1984
-export const BAR = LEVEL_AN_DIE_FREUDE
-
-export const LEVEL_IMAGE_EXAMPLE = {
+// ! Temporäre level zu Test-Zwecken:
+export const TEMP_FOO = LEVEL_1984
+export const TEMP_BAR = LEVEL_AN_DIE_FREUDE
+export const TEMP_IMAGE_EXAMPLE = {
   name: 'Image Example',
   mode: 'image',
   tiles: createTilesFromText(textAbschied),
