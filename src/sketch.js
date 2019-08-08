@@ -30,6 +30,7 @@ export function preload() {
   images.background = loadImage('./src/assets/images/background.png')
   images.placeholderImg = loadImage('./src/assets/images/placeholder_img.png')
   images.placeholderText = loadImage('./src/assets/images/placeholder_text.png')
+  images.nyan = loadImage('./src/assets/images/nyan.png')
 }
 
 export function setup() {
