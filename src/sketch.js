@@ -14,11 +14,11 @@ export const images = {}
 let pressStart2P
 
 export function preload() {
-  pressStart2P = loadFont('/src/assets/fonts/PressStart2P.ttf')
+  pressStart2P = loadFont('./src/assets/fonts/PressStart2P.ttf')
 
-  images.star = loadImage('/src/assets/images/star.png')
-  images.clock = loadImage('/src/assets/images/clock.png')
-  images.heart = loadImage('/src/assets/images/heart.png')
+  images.star = loadImage('./src/assets/images/star.png')
+  images.clock = loadImage('./src/assets/images/clock.png')
+  images.heart = loadImage('./src/assets/images/heart.png')
 }
 
 export function setup() {
