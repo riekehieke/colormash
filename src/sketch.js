@@ -28,7 +28,8 @@ export function preload() {
   images.clockHelp = loadImage('./src/assets/images/clock_help.png')
   images.heartHelp = loadImage('./src/assets/images/heart_help.png')
   images.background = loadImage('./src/assets/images/background.png')
-  images.placeholder = loadImage('./src/assets/images/placeholder.png')
+  images.placeholderImg = loadImage('./src/assets/images/placeholder_img.png')
+  images.placeholderText = loadImage('./src/assets/images/placeholder_text.png')
 }
 
 export function setup() {

@@ -1,8 +1,6 @@
 import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
 import { state } from '../sketch.js'
-
-let colorsBW = [40, 255, 255, 255, 255]
-let colorsBlue = [200, 0, 0, 0, 0]
+import { colorsBW, colorsBlue } from '../constants.js'
 
 class MenuButton {
   constructor(TargetPage, drawOptions) {

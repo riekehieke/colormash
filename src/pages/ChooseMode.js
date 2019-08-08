@@ -1,12 +1,11 @@
-import { BasePage, ChooseImage, Start } from './index.js'
+import { BasePage, ChooseLevel, Start } from './index.js'
 import { state, images } from '../sketch.js'
+import { colorsBlue } from '../constants.js'
 import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
 } from '../constants.js'
-
-let colorsBlue = [200, 0, 0, 0, 0]
 
 class ModeButton {
   constructor(mode, drawOptions) {
@@ -104,7 +103,7 @@ export class ChooseMode extends BasePage {
 
     if (keyCode === ENTER) {
       state.currentMode = this.selectedButton.mode
-      state.currentPage = new ChooseImage()
+      state.currentPage = new ChooseLevel()
     }
   }
 }
