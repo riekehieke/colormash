@@ -162,8 +162,8 @@ export class Game extends BasePage {
     if (!this.startTime) this.startTime = millis()
 
     const nextKey = this.nextTile.key
-    if (key === nextKey) this.currentIndex++
-    else this.errorCount++
+    if (key.toLowerCase() === nextKey) this.currentIndex++
+    else if (keyCode !== SHIFT) this.errorCount++
 
     if (!this.nextTile) {
       state.result.time = (millis() - this.startTime) / 1000
