@@ -4,7 +4,7 @@ import { LETTERS } from '../constants.js'
 import { createChunkedArray } from '../utils.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 1
 
 // TODO: Level aus Auswahl auslesen
 const getLevel = () => {
@@ -44,6 +44,7 @@ class PixelTile {
 
 export class Game extends BasePage {
   currentIndex = -1
+  time = 0
 
   constructor() {
     super()
@@ -60,9 +61,8 @@ export class Game extends BasePage {
     return this.level[this.currentIndex + 1]
   }
 
-  drawRow = (row, rowIndex) => {
+  drawRow = (row, rowIndex, xCoord) => {
     const yFirstRow = 84 + TILE_SIZE / 2
-    const xCoord = width / 2 - (TILE_SIZE * ROW_SIZE) / 2
 
     row.forEach((pixel, columnIndex) =>
       pixel.draw({
@@ -74,13 +74,31 @@ export class Game extends BasePage {
   }
 
   draw() {
-    this.rows.forEach(this.drawRow)
+    const xCoord = width / 2 - ((TILE_SIZE - 1) * ROW_SIZE) / 2
+    // Spielbrett
+    this.rows.forEach((row, index) => this.drawRow(row, index, xCoord))
+    // Stoppuhr
+    if (this.startTime) this.time = (millis() - this.startTime) / 1000
+    // Zeit
+    fill(255)
+    textAlign(CENTER, TOP)
+    textSize(20)
+    text('TIME', xCoord / 2, 285)
+    text('SCORE', width - xCoord / 2, 285)
+    textSize(30)
+    text(this.time.toFixed(2), xCoord / 2, 335)
+    text('12345', width - xCoord / 2, 335)
   }
 
   onKeyPress() {
+    if (!this.startTime) this.startTime = millis()
+
     const nextKey = this.nextTile.key
     if (key === nextKey) this.currentIndex++
 
-    if (!this.nextTile) state.currentPage = new Success()
+    if (!this.nextTile) {
+      const finalTime = millis() - this.startTime
+      state.currentPage = new Success()
+    }
   }
 }
