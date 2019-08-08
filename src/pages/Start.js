@@ -1,8 +1,6 @@
 import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
-import { state } from '../sketch.js'
-
-let colorsBW = [40, 255, 255, 255, 255]
-let colorsBlue = [200, 0, 0, 0, 0]
+import { state, images } from '../sketch.js'
+import { colorsBW, colorsBlue } from '../constants.js'
 
 class MenuButton {
   constructor(TargetPage, drawOptions) {
@@ -83,6 +81,10 @@ export class Start extends BasePage {
     textAlign(RIGHT, TOP)
     fill(random(colorsBW))
     text('PRESS i FOR IMPRINT', width - 30, 610)
+
+    // Nyan Cat
+    imageMode(BOTTOM)
+    image(images.nyan, 0, height - 230)
   }
 
   onKeyPress() {
