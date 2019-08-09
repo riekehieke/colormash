@@ -61,6 +61,7 @@ export class Highscores extends BasePage {
 
     this.columns = [numberColumn, arcadeColumn, timetrialColumn, survivalColumn]
   }
+
   draw() {
     // Überschrift
     fill(255)
@@ -87,5 +88,18 @@ export class Highscores extends BasePage {
     this.columns.forEach(column => {
       column.draw()
     })
+  }
+
+  onKeyPress() {
+    if (key.toLowerCase() === 'r') {
+      state.highscores = {
+        [GAME_MODE_ARCADE]: [],
+        [GAME_MODE_TIMETRIAL]: [],
+        [GAME_MODE_SURVIVAL]: [],
+      }
+
+      localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
+      state.currentPage = new Highscores()
+    }
   }
 }
