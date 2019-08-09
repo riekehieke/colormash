@@ -3,6 +3,7 @@ Thumbs.db
 /dist
 hint-report/
 .firebase/
+.cache/
 
 # local env files
 .env.local

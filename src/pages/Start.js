@@ -31,10 +31,10 @@ class MenuButton {
 }
 
 export class Start extends BasePage {
-  header = null
-
   constructor() {
     super()
+    this.header = null
+
     const xCenter = width / 2
     const yFirstButton = 225 + 37.5
 

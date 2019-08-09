@@ -3,9 +3,9 @@ import { Header } from '../components/Header.js'
 import { Start } from './index.js'
 
 export class BasePage {
-  header = new Header()
-
   constructor() {
+    this.header = new Header()
+
     const originalDraw = this.draw.bind(this)
     const originalOnKeyPress = this.onKeyPress.bind(this)
 
@@ -28,7 +28,7 @@ export class BasePage {
   draw() {}
   onKeyPress() {}
 
-  // Private Methoden, die Grundmethoden wie draw oder onKeyPress erweitern (siehe constructor)
+  // Private Methoden, die Grundmethoden wie draw & onKeyPress erweitern (siehe constructor)
   _drawBackground() {
     imageMode(CORNER)
     image(images.background, 0, 0)

@@ -47,14 +47,14 @@ class LevelButton {
 }
 
 export class ChooseLevel extends BasePage {
-  currentRowIndex = 0
-  currentColumnIndex = 0
-  selectedLevelType = 'image'
-  imageLevels = []
-  textLevels = []
-
   constructor() {
     super()
+
+    this.currentRowIndex = 0
+    this.currentColumnIndex = 0
+    this.selectedLevelType = 'image'
+    this.imageLevels = []
+    this.textLevels = []
 
     for (const level of allLevels) {
       if (level.mode === 'text') this.textLevels.push(level)

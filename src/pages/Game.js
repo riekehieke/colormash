@@ -44,19 +44,20 @@ class PixelTile {
 }
 
 export class Game extends BasePage {
-  currentIndex = -1
-  time = 0
-  timer = 1000
-  timeRemaining = this.timer / 1000
-  errorCount = 0
-  score = 0
-  multiplier = 1
-  multiplierTime = 1
-  letterCount = 0
-  isInErrorState = false
-
   constructor() {
     super()
+
+    this.currentIndex = -1
+    this.time = 0
+    this.timer = 1000
+    this.timeRemaining = this.timer / 1000
+    this.errorCount = 0
+    this.score = 0
+    this.multiplier = 1
+    this.multiplierTime = 1
+    this.letterCount = 0
+    this.isInErrorState = false
+
     const tileCount = ROW_SIZE ** 2
 
     let tiles = state.currentLevel.tiles

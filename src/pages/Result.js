@@ -13,6 +13,7 @@ import { buildImageFromTiles } from '../utils.js'
 export class Result extends BasePage {
   constructor() {
     super()
+
     this.picture = buildImageFromTiles(state.currentLevel.tiles)
     this.wechsel = [
       magenta,
