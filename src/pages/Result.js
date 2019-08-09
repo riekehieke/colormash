@@ -51,8 +51,11 @@ export class Result extends BasePage {
     // Sterne
     imageMode(CENTER)
     if (state.result.score >= 100000) image(images.starFilled, 578 - 100, 360)
+    else image(images.star, 578 - 100, 360)
     if (state.result.score >= 300000) image(images.starFilled, 578, 360)
+    else image(images.star, 578, 360)
     if (state.result.score >= 800000) image(images.starFilled, 578 + 100, 360)
+    else image(images.star, 578 + 100, 360)
   }
   drawTimetrial() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
