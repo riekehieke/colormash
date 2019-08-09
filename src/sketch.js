@@ -78,5 +78,5 @@ export function draw() {
 }
 
 export function keyPressed() {
-  state.currentPage.onKeyPress()
+  if (state.currentPage) state.currentPage.onKeyPress()
 }
