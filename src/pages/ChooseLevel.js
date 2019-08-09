@@ -56,6 +56,8 @@ export class ChooseLevel extends BasePage {
     this.imageLevels = []
     this.textLevels = []
 
+    this.drawRow = this.drawRow.bind(this)
+
     for (const level of allLevels) {
       if (level.mode === 'text') this.textLevels.push(level)
       else this.imageLevels.push(level)
@@ -97,7 +99,7 @@ export class ChooseLevel extends BasePage {
     this.rows.forEach(this.drawRow)
   }
 
-  drawRow = (row, rowIndex) => {
+  drawRow(row, rowIndex) {
     const xFirstColumn = 308
     const yFirstRow = 294
 

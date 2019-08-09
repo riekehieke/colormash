@@ -57,6 +57,7 @@ export class Game extends BasePage {
     this.multiplierTime = 1
     this.letterCount = 0
     this.isInErrorState = false
+    this.drawRow = this.drawRow.bind(this)
 
     const tileCount = ROW_SIZE ** 2
 
@@ -74,7 +75,7 @@ export class Game extends BasePage {
     return this.tiles[this.currentIndex + 1]
   }
 
-  drawRow = (row, rowIndex, xCoord) => {
+  drawRow(row, rowIndex, xCoord) {
     const yFirstRow = 84 + TILE_SIZE / 2
 
     row.forEach((pixel, columnIndex) =>
