@@ -89,10 +89,13 @@ export class Result extends BasePage {
     imageMode(CENTER)
     if (state.result.hearts >= 1)
       image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
+    else image(images.heart, width / 2 - 40, 55, 22.3, 18.3)
     if (state.result.hearts >= 2)
       image(images.heartFilled, width / 2, 55, 22.3, 18.3)
+    else image(images.heart, width / 2, 55, 22.3, 18.3)
     if (state.result.hearts === 3)
       image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+    else image(images.heart, width / 2 + 40, 55, 22.3, 18.3)
   }
   draw() {
     // Hier dann am Ende das richtige (ausgemalte) Bild

@@ -134,10 +134,13 @@ export class Game extends BasePage {
     imageMode(CENTER)
     if (this.errorCount === 0)
       image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
+    else image(images.heart, width / 2 + 40, 55, 22.3, 18.3)
     if (this.errorCount <= 1)
       image(images.heartFilled, width / 2, 55, 22.3, 18.3)
+    else image(images.heart, width / 2, 55, 22.3, 18.3)
     if (this.errorCount <= 2)
       image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
+    else image(images.heart, width / 2 - 40, 55, 22.3, 18.3)
   }
 
   draw() {
