@@ -19,15 +19,12 @@
   "homepage": "https://github.com/jonaskuske/colormash#readme",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@types/p5": "^0.9.0",
     "babel-eslint": "^10.0.2",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "lint-staged": "^9.2.1",
-    "parcel-bundler": "^1.12.3",
     "prettier": "^1.18.2",
     "yorkie": "^2.0.0"
   },
@@ -59,10 +56,5 @@
   "eslintIgnore": [
     ".cache/",
     "dist/"
-  ],
-  "babel": {
-    "plugins": [
-      "@babel/proposal-class-properties"
-    ]
-  }
+  ]
 }
