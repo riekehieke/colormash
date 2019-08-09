@@ -38,6 +38,8 @@ export const images = {
 
 // Fonts
 let pressStart2P
+// Song
+let flamingoSong
 
 export function preload() {
   const storedHighscores = localStorage.getItem('__HIGHSCORES')
@@ -56,6 +58,8 @@ export function preload() {
   images.background = loadImage('./src/assets/images/background.png')
   images.placeholderImg = loadImage('./src/assets/images/placeholder_img.png')
   images.nyan = loadImage('./src/assets/images/nyan.png')
+
+  flamingoSong = loadSound('./src/assets/sounds/flamingo.mp3')
 }
 
 export function setup() {
@@ -65,6 +69,7 @@ export function setup() {
   textFont(pressStart2P)
 
   state.currentPage = new Start()
+  if (location.hostname !== 'localhost') flamingoSong.loop()
 }
 
 export function draw() {
