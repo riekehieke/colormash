@@ -15,7 +15,12 @@ export class Result extends BasePage {
   constructor() {
     super()
 
-    this.picture = buildImageFromTiles(state.currentLevel.tiles)
+    this.fullPicture = buildImageFromTiles(state.currentLevel.tiles)
+    const progressTiles = state.currentLevel.tiles.map((tile, index) => {
+      return index <= state.result.tileIndex ? tile : { color: 0 }
+    })
+    this.progressPicture = buildImageFromTiles(progressTiles)
+
     this.wechsel = [
       magenta,
       magenta,
@@ -31,7 +36,7 @@ export class Result extends BasePage {
       magenta,
       colorsBW,
     ]
-    this.fullImage = false
+    this.displayFullImage = false
 
     state.highscores[state.currentMode].push(state.result)
     localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
@@ -108,13 +113,13 @@ export class Result extends BasePage {
     rect(0, 0, width, height)
     rectMode(CENTER)
     imageMode(CENTER)
-    image(this.picture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+    image(this.fullPicture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
   }
 
   draw() {
     // Fertiges Bild
     imageMode(CENTER)
-    image(this.picture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+    image(this.progressPicture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
 
     // You Win/Game Over Banner
     if (state.currentMode !== GAME_MODE_ARCADE) {
@@ -132,7 +137,7 @@ export class Result extends BasePage {
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival()
 
     // Full Image
-    if (this.fullImage) {
+    if (this.displayFullImage) {
       this.drawFullImage()
     }
 
@@ -152,8 +157,8 @@ export class Result extends BasePage {
     if (key.toLowerCase() === 'h') state.currentPage = new Highscores()
     // Press V to view image
     if (key.toLowerCase() === 'v') {
-      if (!this.fullImage) this.fullImage = true
-      else this.fullImage = false
+      if (!this.displayFullImage) this.displayFullImage = true
+      else this.displayFullImage = false
     }
   }
 }

@@ -18,6 +18,7 @@ export const state = {
   },
   result: {
     time: null,
+    tileIndex: null,
     score: null,
     status: null,
     hearts: null,

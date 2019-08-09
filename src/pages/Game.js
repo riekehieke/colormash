@@ -50,8 +50,8 @@ export class Game extends BasePage {
 
     this.currentIndex = -1
     this.time = 0
-    this.timer =
-      state.currentLevel.mode === 'text' ? ONE_MINUTE * 3 : ONE_MINUTE * 4
+    if (state.currentLevel.mode === 'text') this.timer = ONE_MINUTE * 3
+    else this.timer = ONE_MINUTE * 4
     this.timeRemaining = this.timer / 1000
     this.errorCount = 0
     this.score = 0
@@ -193,6 +193,7 @@ export class Game extends BasePage {
     state.result.time = this.timeRemaining = 0
     state.result.status = 'GAME OVER'
     state.result.score = this.score
+    state.result.tileIndex = this.currentIndex
 
     state.currentPage = new Result()
   }
@@ -203,6 +204,7 @@ export class Game extends BasePage {
     state.result.score = this.score
     state.result.status = 'GAME OVER'
 
+    state.result.tileIndex = this.currentIndex
     state.currentPage = new Result()
   }
 
@@ -233,7 +235,7 @@ export class Game extends BasePage {
     }
 
     state.result.score = this.score * this.multiplierTime
-
+    state.result.tileIndex = this.currentIndex
     state.currentPage = new Result()
   }
 
