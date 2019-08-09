@@ -1,4 +1,4 @@
-import { BasePage } from './index.js'
+import { BasePage, Highscores } from './index.js'
 import { state, images } from '../sketch.js'
 import {
   GAME_MODE_ARCADE,
@@ -7,6 +7,7 @@ import {
   yellow,
   magenta,
   blue,
+  colorsBW,
 } from '../constants.js'
 import { buildImageFromTiles } from '../utils.js'
 
@@ -28,7 +29,9 @@ export class Result extends BasePage {
       magenta,
       magenta,
       magenta,
+      colorsBW,
     ]
+    this.fullImage = false
 
     state.highscores[state.currentMode].push(state.result)
     localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
@@ -98,15 +101,22 @@ export class Result extends BasePage {
       image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
     else image(images.heart, width / 2 + 40, 55, 22.3, 18.3)
   }
-  draw() {
-    // Hier dann am Ende das richtige (ausgemalte) Bild
-    strokeWeight(3)
-    imageMode(CENTER)
-    //fill(yellow)
-    image(this.picture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
-    //rect(width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
 
-    // You Win/Game Over
+  drawFullImage() {
+    fill(0, 0, 0, 230)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+    rectMode(CENTER)
+    imageMode(CENTER)
+    image(this.picture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+  }
+
+  draw() {
+    // Fertiges Bild
+    imageMode(CENTER)
+    image(this.picture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+
+    // You Win/Game Over Banner
     if (state.currentMode !== GAME_MODE_ARCADE) {
       noStroke()
       fill(0)
@@ -116,8 +126,34 @@ export class Result extends BasePage {
       fill(random(this.wechsel))
       text(state.result.status, 578, 325)
     }
+
     if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade()
     if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial()
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival()
+
+    // Full Image
+    if (this.fullImage) {
+      this.drawFullImage()
+    }
+
+    // Insctructions press V & H
+    textSize(10)
+    textAlign(CENTER, TOP)
+    fill(random(colorsBW))
+    text(
+      'PRESS V TO TOGGLE FULL SIZE IMAGE. PRESS H TO GO TO HIGHSCORES.',
+      width / 2,
+      height - 30,
+    )
+  }
+
+  onKeyPress() {
+    // Press H to go to Highscores
+    if (key.toLowerCase() === 'h') state.currentPage = new Highscores()
+    // Press V to view image
+    if (key.toLowerCase() === 'v') {
+      if (!this.fullImage) this.fullImage = true
+      else this.fullImage = false
+    }
   }
 }

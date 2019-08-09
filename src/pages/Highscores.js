@@ -25,11 +25,6 @@ class HighscoreColumn {
     this.values.filter(showOnlyFirstFive).forEach((value, i) => {
       text(value.score, this.drawOptions.x, this.drawOptions.y + 68 * i)
     })
-
-    // Press R to reset Highscores
-    textSize(10)
-    fill(random(colorsBW))
-    text('PRESS R TO RESET HIGHSCORES', width / 2, height - 40)
   }
 }
 
@@ -94,6 +89,11 @@ export class Highscores extends BasePage {
     this.columns.forEach(column => {
       column.draw()
     })
+
+    // Press R to reset Highscores
+    textSize(10)
+    fill(random(colorsBW))
+    text('PRESS R TO RESET HIGHSCORES', width / 2, height - 30)
   }
 
   onKeyPress() {
