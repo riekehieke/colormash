@@ -58,6 +58,7 @@ export class Game extends BasePage {
     this.multiplier = 1
     this.multiplierTime = 1
     this.letterCount = 0
+    this.text = 'MISTAKES: '
     this.isInErrorState = false
     this.drawRow = this.drawRow.bind(this)
 
@@ -101,6 +102,11 @@ export class Game extends BasePage {
     textSize(30)
     text(this.time.toFixed(2), xCoord / 2, 335)
     text(this.score, width - xCoord / 2, 335)
+
+    // Live Error Count
+    textSize(10)
+    fill(255)
+    text(this.text + this.errorCount, width / 2, height - 30)
   }
 
   drawTimetrial(xCoord) {
@@ -119,6 +125,11 @@ export class Game extends BasePage {
     textSize(30)
     text(this.timeRemaining.toFixed(2), xCoord / 2, 335)
     text(this.score, width - xCoord / 2, 335)
+
+    // Live Error Count
+    textSize(10)
+    fill(255)
+    text(this.text + this.errorCount, width / 2, height - 30)
   }
 
   drawSurvival(xCoord) {
