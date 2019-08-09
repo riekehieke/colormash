@@ -8,6 +8,7 @@ import {
   yellow,
   blue,
   magenta,
+  ONE_MINUTE,
 } from '../constants.js'
 
 const TILE_SIZE = 16
@@ -49,7 +50,8 @@ export class Game extends BasePage {
 
     this.currentIndex = -1
     this.time = 0
-    this.timer = 1000
+    this.timer =
+      state.currentLevel.mode === 'text' ? ONE_MINUTE * 3 : ONE_MINUTE * 4
     this.timeRemaining = this.timer / 1000
     this.errorCount = 0
     this.score = 0

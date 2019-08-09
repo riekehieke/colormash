@@ -13,6 +13,9 @@ export const yellow = [255, 255, 0]
 export const magenta = [255, 0, 255]
 export const blue = [0, 255, 255]
 
+export const ONE_SECOND = 1000
+export const ONE_MINUTE = ONE_SECOND * 60
+
 export const LETTERS = {
   a: { key: 'a', color: color(255, 255, 255) },
   b: { key: 'b', color: color(220, 197, 196) },
