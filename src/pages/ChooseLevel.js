@@ -120,6 +120,8 @@ export class ChooseLevel extends BasePage {
     if (key === 's') {
       const otherType = this.selectedLevelType === 'image' ? 'text' : 'image'
       this.selectedLevelType = otherType
+      this.currentColumnIndex = 0
+      this.currentRowIndex = 0
     }
 
     if (keyCode === ENTER) {
