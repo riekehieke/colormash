@@ -1,4 +1,4 @@
-import { BasePage } from './index.js'
+import { BasePage } from './BasePage.js'
 import { images } from '../sketch.js'
 
 const TEXT_EXPLANATION = `YOUR GOAL IS TO COLORIZE THE WORD PUZZLE. PRESS THE SHOWN KEY ON YOUR KEYBOARD -

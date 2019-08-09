@@ -1,4 +1,4 @@
-import { BasePage } from './index.js'
+import { BasePage } from './BasePage.js'
 
 const imprintText = `Erstellt von
 Jonas Kuske – https://jonaskuske.com
