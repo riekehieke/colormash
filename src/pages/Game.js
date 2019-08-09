@@ -5,10 +5,13 @@ import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
+  yellow,
+  blue,
+  magenta,
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 5
 
 class PixelTile {
   constructor(tile, index) {
@@ -165,17 +168,17 @@ export class Game extends BasePage {
 
     // Multiplier anzeigen
     if (this.multiplier === 2) {
-      fill(255, 255, 0)
+      fill(yellow)
       textSize(40)
       text('x2', width - 100, 370)
     }
     if (this.multiplier === 3) {
-      fill(0, 255, 255)
+      fill(blue)
       textSize(45)
       text('x3', width - 100, 370)
     }
     if (this.multiplier === 4) {
-      fill(255, 0, 255)
+      fill(magenta)
       textSize(50)
       text('x4', width - 100, 370)
     }
