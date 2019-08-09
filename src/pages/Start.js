@@ -1,6 +1,6 @@
 import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
 import { state, images } from '../sketch.js'
-import { colorsBW, colorsBlue } from '../constants.js'
+import { colorsBW, colorsBlue, magenta, yellow, blue } from '../constants.js'
 
 class MenuButton {
   constructor(TargetPage, drawOptions) {
@@ -14,7 +14,7 @@ class MenuButton {
     // Button outline
     strokeWeight(8)
     if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(255, 0, 255)
+    else stroke(magenta)
 
     // Button background
     fill(0)
@@ -65,7 +65,7 @@ export class Start extends BasePage {
   draw() {
     // Styling der Startseite
     noStroke()
-    fill(255, 255, 0)
+    fill(yellow)
     textSize(50)
     textAlign(LEFT, TOP)
     text('COLOR MASH', 328, 100)

@@ -1,7 +1,7 @@
 import { BasePage, Game } from './index.js'
 import { state, images } from '../sketch.js'
 import * as LEVELS from '../levels/index.js'
-import { colorsBW, colorsBlue } from '../constants.js'
+import { colorsBW, colorsBlue, magenta, yellow, blue } from '../constants.js'
 import { createChunkedArray, buildImageFromTiles } from '../utils.js'
 
 const allLevels = Object.values(LEVELS)
@@ -26,7 +26,7 @@ class LevelButton {
     // Button outline
     strokeWeight(8)
     if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(255, 0, 255)
+    else stroke(magenta)
 
     // Button background
     fill(level.mode === 'text' ? 0 : color(0, 0, 0, 0))

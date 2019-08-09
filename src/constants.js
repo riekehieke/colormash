@@ -9,6 +9,10 @@ export const GAME_MODE_SURVIVAL = 'GAME_MODE_SURVIVAL'
 export let colorsBW = [40, 255, 255, 255, 255]
 export let colorsBlue = [200, 0, 0, 0, 0]
 
+export const yellow = [255, 255, 0]
+export const magenta = [255, 0, 255]
+export const blue = [0, 255, 255]
+
 export const LETTERS = {
   a: { key: 'a', color: getRandomColor() },
   b: { key: 'b', color: getRandomColor() },

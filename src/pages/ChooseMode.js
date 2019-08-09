@@ -1,6 +1,6 @@
 import { BasePage, ChooseLevel, Start } from './index.js'
 import { state, images } from '../sketch.js'
-import { colorsBlue } from '../constants.js'
+import { colorsBlue, magenta, yellow, blue } from '../constants.js'
 import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
@@ -19,7 +19,7 @@ class ModeButton {
     // Button outline
     strokeWeight(8)
     if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(255, 0, 255)
+    else stroke(magenta)
 
     // Button background
     fill(0)
