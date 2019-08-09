@@ -165,7 +165,7 @@ export class Game extends BasePage {
 
     // Multiplier anzeigen
     if (this.multiplier === 2) {
-      fill(255, 0, 255)
+      fill(255, 255, 0)
       textSize(40)
       text('x2', width - 100, 370)
     }
@@ -175,7 +175,7 @@ export class Game extends BasePage {
       text('x3', width - 100, 370)
     }
     if (this.multiplier === 4) {
-      fill(255, 255, 0)
+      fill(255, 0, 255)
       textSize(50)
       text('x4', width - 100, 370)
     }
