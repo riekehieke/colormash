@@ -28,7 +28,11 @@ export class Result extends BasePage {
       magenta,
       magenta,
     ]
+
+    state.highscores[state.currentMode].push(state.result)
+    localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
   }
+
   drawArcade() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
     const posRight = width - posLeft

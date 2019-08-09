@@ -1,40 +1,38 @@
 import { createTilesFromText } from '../utils.js'
 import {
-  textTransrapid,
-  text1984,
-  textAbschied,
-  textAnDieFreude,
+  transrapid,
+  nineteenEightyFour,
+  abschied,
+  schiller,
+  monaLisa,
 } from './texts.js'
 
 export const LEVEL_TRANSRAPID = {
   name: 'Transrapid',
   mode: 'text',
-  tiles: createTilesFromText(textTransrapid),
+  tiles: createTilesFromText(transrapid),
 }
 
 export const LEVEL_1984 = {
   name: '1984',
   mode: 'text',
-  tiles: createTilesFromText(text1984),
+  tiles: createTilesFromText(nineteenEightyFour),
 }
 
 export const LEVEL_ABSCHIED = {
   name: 'Abschied',
   mode: 'text',
-  tiles: createTilesFromText(textAbschied),
+  tiles: createTilesFromText(abschied),
 }
 
 export const LEVEL_AN_DIE_FREUDE = {
   name: 'Schiller',
   mode: 'text',
-  tiles: createTilesFromText(textAnDieFreude),
+  tiles: createTilesFromText(schiller),
 }
 
-// ! Temporäre level zu Test-Zwecken:
-export const TEMP_FOO = LEVEL_1984
-export const TEMP_BAR = LEVEL_AN_DIE_FREUDE
-export const TEMP_IMAGE_EXAMPLE = {
-  name: 'Image Example',
+export const LEVEL_MONA_LISA = {
+  name: 'Mona Lisa',
   mode: 'image',
-  tiles: createTilesFromText(textAbschied),
+  tiles: createTilesFromText(monaLisa),
 }

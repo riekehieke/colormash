@@ -1,9 +1,12 @@
 import { BasePage } from './index.js'
 import { state } from '../sketch.js'
+import {
+  GAME_MODE_ARCADE,
+  GAME_MODE_TIMETRIAL,
+  GAME_MODE_SURVIVAL,
+} from '../constants.js'
 
-const showOnlyFirstFive = (_, index) => {
-  return index < 5
-}
+const showOnlyFirstFive = (_, index) => index < 5
 
 class HighscoreColumn {
   constructor(values, drawOptions) {
@@ -19,7 +22,7 @@ class HighscoreColumn {
       this.values = this.values.sort((a, b) => b - a)
     }
     this.values.filter(showOnlyFirstFive).forEach((value, i) => {
-      text(value, this.drawOptions.x, this.drawOptions.y + 68 * i)
+      text(value.score, this.drawOptions.x, this.drawOptions.y + 68 * i)
     })
   }
 }
@@ -32,20 +35,26 @@ const yRow = 263
 export class Highscores extends BasePage {
   constructor() {
     super()
-    const numberColumn = new HighscoreColumn(['1.', '2.', '3.', '4.', '5.'], {
+
+    const numbers = ['1.', '2.', '3.', '4.', '5.'].map(num => ({ score: num }))
+    const arcadeScores = state.highscores[GAME_MODE_ARCADE]
+    const timetrialScores = state.highscores[GAME_MODE_TIMETRIAL]
+    const survivalScores = state.highscores[GAME_MODE_SURVIVAL]
+
+    const numberColumn = new HighscoreColumn(numbers, {
       x: (xFirst - 160) / 2 + 160,
       y: yRow,
       noSort: true,
     })
-    const arcadeColumn = new HighscoreColumn(state.highscores.arcade, {
+    const arcadeColumn = new HighscoreColumn(arcadeScores, {
       x: (xSecond - xFirst) / 2 + xFirst,
       y: yRow,
     })
-    const timetrialColumn = new HighscoreColumn(state.highscores.timetrial, {
+    const timetrialColumn = new HighscoreColumn(timetrialScores, {
       x: (xThird - xSecond) / 2 + xSecond,
       y: yRow,
     })
-    const survivalColumn = new HighscoreColumn(state.highscores.survival, {
+    const survivalColumn = new HighscoreColumn(survivalScores, {
       x: (width - 160 - xThird) / 2 + xThird,
       y: yRow,
     })
