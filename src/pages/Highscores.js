@@ -4,6 +4,7 @@ import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
+  colorsBW,
 } from '../constants.js'
 
 const showOnlyFirstFive = (_, index) => index < 5
@@ -24,6 +25,11 @@ class HighscoreColumn {
     this.values.filter(showOnlyFirstFive).forEach((value, i) => {
       text(value.score, this.drawOptions.x, this.drawOptions.y + 68 * i)
     })
+
+    // Press R to reset Highscores
+    textSize(10)
+    fill(random(colorsBW))
+    text('PRESS R TO RESET HIGHSCORES', width / 2, height - 40)
   }
 }
 
