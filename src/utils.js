@@ -18,8 +18,13 @@ export function createChunkedArray(targetArray, chunkSize = 10) {
 }
 
 export const createTilesFromText = text => {
+  text = text
+    .replace(/\n/g, '')
+    .toLowerCase()
+    .padEnd(1024)
+
   if (text.length > 1024) throwError('Text too long:\n' + text)
-  text = text.toLowerCase().padEnd(1024)
+
   const keys = text.split('')
   const tiles = keys.map(k => LETTERS[k] || throwError(`Invalid key: "${k}"`))
   return tiles

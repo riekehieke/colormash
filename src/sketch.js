@@ -1,15 +1,20 @@
 /// <reference path="../globals.d.ts" />
 
 import { Start } from './pages/index.js'
+import {
+  GAME_MODE_ARCADE,
+  GAME_MODE_TIMETRIAL,
+  GAME_MODE_SURVIVAL,
+} from './constants.js'
 
 export const state = {
   currentPage: null,
   currentMode: null,
   currentLevel: null,
   highscores: {
-    arcade: [12345, 465645, 345445, 3424543, 3326, 34564567],
-    timetrial: [473895, 472772],
-    survival: [488283, 27374],
+    [GAME_MODE_ARCADE]: [],
+    [GAME_MODE_TIMETRIAL]: [],
+    [GAME_MODE_SURVIVAL]: [],
   },
   result: {
     time: null,
@@ -35,6 +40,9 @@ export const images = {
 let pressStart2P
 
 export function preload() {
+  const storedHighscores = localStorage.getItem('__HIGHSCORES')
+  if (storedHighscores) state.highscores = JSON.parse(storedHighscores)
+
   pressStart2P = loadFont('./src/assets/fonts/PressStart2P.ttf')
 
   images.star = loadImage('./src/assets/images/star.png')

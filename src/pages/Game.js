@@ -46,13 +46,14 @@ class PixelTile {
 export class Game extends BasePage {
   currentIndex = -1
   time = 0
-  timer = 300000
-  timeRemaining = 300
+  timer = 1000
+  timeRemaining = this.timer / 1000
   errorCount = 0
   score = 0
   multiplier = 1
   multiplierTime = 1
   letterCount = 0
+  isInErrorState = false
 
   constructor() {
     super()
@@ -137,13 +138,6 @@ export class Game extends BasePage {
       image(images.heartFilled, width / 2, 55, 22.3, 18.3)
     if (this.errorCount <= 2)
       image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
-    if (this.errorCount >= 3) {
-      state.result.time = (millis() - this.startTime) / 1000
-      state.result.score = this.score
-      state.result.hearts = 0
-      state.result.status = 'GAME OVER'
-      state.currentPage = new Result()
-    }
   }
 
   draw() {
@@ -157,14 +151,7 @@ export class Game extends BasePage {
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival(xCoord)
 
     // Timetrial: Game Over wenn Zeit abgelaufen
-    if (state.currentMode === GAME_MODE_TIMETRIAL) {
-      if (this.timeRemaining <= 0) {
-        state.result.time = this.timeRemaining
-        state.result.status = 'GAME OVER'
-        state.result.score = this.score
-        state.currentPage = new Result()
-      }
-    }
+    if (this.timeRemaining <= 0) this.timeOut()
 
     // Multiplier anzeigen
     if (this.multiplier === 2) {
@@ -184,51 +171,88 @@ export class Game extends BasePage {
     }
   }
 
+  timeOut() {
+    state.result.time = this.timeRemaining = 0
+    state.result.status = 'GAME OVER'
+    state.result.score = this.score
+
+    state.currentPage = new Result()
+  }
+
+  outOfHearts() {
+    state.result.time = (millis() - this.startTime) / 1000
+    state.result.hearts = 0
+    state.result.score = this.score
+    state.result.status = 'GAME OVER'
+
+    state.currentPage = new Result()
+  }
+
+  win() {
+    // Perfektes Spiel Bonuspunkte
+    if (this.errorCount === 0) this.score += 48200
+    // Zeit Mulitplier
+    if (state.currentMode !== GAME_MODE_TIMETRIAL) {
+      let timeBefore = (millis() - this.startTime) / 1000
+      if (timeBefore / 32 > 25) this.multiplierTime = 1
+      if (timeBefore / 32 <= 20) this.multiplierTime = 2
+      if (timeBefore / 32 <= 15) this.multiplierTime = 3
+      if (timeBefore / 32 <= 10) this.multiplierTime = 4
+    }
+    // Ergebnisse speichern
+    state.result.time = (millis() - this.startTime) / 1000
+    state.result.status = 'YOU WIN'
+    // Zusätzlich für Survival Mode
+    state.result.hearts = 3 - this.errorCount
+    // Timetrial Mode
+    if (state.currentMode === GAME_MODE_TIMETRIAL) {
+      let timeBefore = 300 - this.timeRemaining
+      if (timeBefore / 32 > 10) this.multiplierTime = 1
+      if (timeBefore / 32 <= 7) this.multiplierTime = 2
+      if (timeBefore / 32 <= 5) this.multiplierTime = 3
+      if (timeBefore / 32 <= 3) this.multiplierTime = 4
+      state.result.time = this.timeRemaining
+    }
+
+    state.result.score = this.score * this.multiplierTime
+
+    state.currentPage = new Result()
+  }
+
+  goNext() {
+    this.isInErrorState = false
+    this.currentIndex++
+    this.letterCount++
+    // Multiplier berechnen
+    if (this.letterCount > 10) this.multiplier = 2
+    if (this.letterCount > 20) this.multiplier = 3
+    if (this.letterCount > 30) this.multiplier = 4
+    // Score berechnen
+    this.score += 50 * this.multiplier
+  }
+
+  handleError() {
+    if (this.isInErrorState) return
+
+    this.isInErrorState = true
+    this.errorCount++
+    this.letterCount = 0
+    this.multiplier = 1
+
+    if (this.errorCount >= 3 && state.currentMode === GAME_MODE_SURVIVAL)
+      this.outOfHearts()
+  }
+
   onKeyPress() {
     if (!this.startTime) this.startTime = millis()
 
-    const nextKey = this.nextTile.key
-    if (key.toLowerCase() === nextKey) {
-      this.currentIndex++
-      this.letterCount++
-      // Multiplier berechnen
-      if (this.letterCount > 10) this.multiplier = 2
-      if (this.letterCount > 20) this.multiplier = 3
-      if (this.letterCount > 30) this.multiplier = 4
-      // Score berechnen
-      this.score += 50 * this.multiplier
-    } else if (keyCode !== SHIFT) {
-      this.errorCount++
-      this.letterCount = 0
-      this.multiplier = 1
+    // Spiel vorbei
+    if (this.nextTile) {
+      const nextKey = this.nextTile.key
+      if (key.toLowerCase() === nextKey) this.goNext()
+      else if (keyCode !== SHIFT) this.handleError()
     }
-    if (!this.nextTile) {
-      // Perfektes Spiel Bonuspunkte
-      if (this.errorCount === 0) this.score += 48200
-      // Zeit Mulitplier
-      if (state.currentMode !== GAME_MODE_TIMETRIAL) {
-        let timeBefore = (millis() - this.startTime) / 1000
-        if (timeBefore / 32 > 25) this.multiplierTime = 1
-        if (timeBefore / 32 <= 20) this.multiplierTime = 2
-        if (timeBefore / 32 <= 15) this.multiplierTime = 3
-        if (timeBefore / 32 <= 10) this.multiplierTime = 4
-      }
-      // Ergebnisse speichern
-      state.result.time = (millis() - this.startTime) / 1000
-      state.result.status = 'YOU WIN'
-      // Zusätzlich für Survival Mode
-      state.result.hearts = 3 - this.errorCount
-      // Timetrial Mode
-      if (state.currentMode === GAME_MODE_TIMETRIAL) {
-        let timeBefore = 300 - this.timeRemaining
-        if (timeBefore / 32 > 10) this.multiplierTime = 1
-        if (timeBefore / 32 <= 7) this.multiplierTime = 2
-        if (timeBefore / 32 <= 5) this.multiplierTime = 3
-        if (timeBefore / 32 <= 3) this.multiplierTime = 4
-        state.result.time = this.timeRemaining
-      }
-      state.result.score = this.score * this.multiplierTime
-      state.currentPage = new Result()
-    }
+
+    if (!this.nextTile) this.win()
   }
 }
