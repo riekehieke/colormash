@@ -1,6 +1,11 @@
 import { BasePage, ChooseMode, Help, Highscores, Imprint } from './index.js'
 import { state, images } from '../sketch.js'
-import { colorsBW, colorsBlue, magenta, yellow, blue } from '../constants.js'
+import {
+  YELLOW,
+  MAGENTA,
+  COLORS_TEXT_FLICKER,
+  COLORS_STROKE_FLICKER,
+} from '../constants.js'
 
 class MenuButton {
   constructor(TargetPage, drawOptions) {
@@ -13,8 +18,8 @@ class MenuButton {
 
     // Button outline
     strokeWeight(8)
-    if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(magenta)
+    if (isSelected) stroke(random(COLORS_STROKE_FLICKER), 255, 255)
+    else stroke(MAGENTA)
 
     // Button background
     fill(0)
@@ -65,7 +70,7 @@ export class Start extends BasePage {
   draw() {
     // Styling der Startseite
     noStroke()
-    fill(yellow)
+    fill(YELLOW)
     textSize(50)
     textAlign(LEFT, TOP)
     text('COLOR MASH', 328, 100)
@@ -79,12 +84,12 @@ export class Start extends BasePage {
     // Hinweis auf Impressum
     textSize(10)
     textAlign(RIGHT, TOP)
-    fill(random(colorsBW))
+    fill(random(COLORS_TEXT_FLICKER))
     text('PRESS i FOR IMPRINT', width - 30, 610)
 
     // Nyan Cat
     imageMode(BOTTOM)
-    image(images.nyan, 0, height - 230)
+    image(images.NYAN_CAT, 0, height - 230)
   }
 
   onKeyPress() {
@@ -93,12 +98,9 @@ export class Start extends BasePage {
     const lastIsSelected = this.currentIndex === this.buttons.length - 1
     const firstIsSelected = this.currentIndex === 0
 
-    if (keyCode === DOWN_ARROW && !lastIsSelected) {
-      this.currentIndex++
-    }
-    if (keyCode === UP_ARROW && !firstIsSelected) {
-      this.currentIndex--
-    }
+    if (keyCode === DOWN_ARROW && !lastIsSelected) this.currentIndex++
+    if (keyCode === UP_ARROW && !firstIsSelected) this.currentIndex--
+
     if (keyCode === ENTER) {
       const { TargetPage } = this.selectedButton
       state.currentPage = new TargetPage()

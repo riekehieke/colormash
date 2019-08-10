@@ -1,6 +1,6 @@
 import { BasePage, ChooseLevel, Start } from './index.js'
 import { state, images } from '../sketch.js'
-import { colorsBlue, magenta, yellow, blue } from '../constants.js'
+import { COLORS_STROKE_FLICKER, MAGENTA, YELLOW, BLUE } from '../constants.js'
 import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
@@ -18,8 +18,8 @@ class ModeButton {
 
     // Button outline
     strokeWeight(8)
-    if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(magenta)
+    if (isSelected) stroke(random(COLORS_STROKE_FLICKER), 255, 255)
+    else stroke(MAGENTA)
 
     // Button background
     fill(0)
@@ -47,19 +47,19 @@ export class ChooseMode extends BasePage {
 
     const arcadeMode = new ModeButton(GAME_MODE_ARCADE, {
       label: 'ARCADE',
-      icon: images.star,
+      icon: images.STAR,
       x: xCenter - 250,
       y: 350,
     })
     const timeMode = new ModeButton(GAME_MODE_TIMETRIAL, {
       label: 'TIMETRIAL',
-      icon: images.clock,
+      icon: images.CLOCK,
       x: xCenter,
       y: 350,
     })
     const surviveMode = new ModeButton(GAME_MODE_SURVIVAL, {
       label: 'SURVIVAL',
-      icon: images.heart,
+      icon: images.HEART,
       x: xCenter + 250,
       y: 350,
     })

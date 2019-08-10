@@ -1,17 +1,30 @@
-import { getRandomColor } from './utils.js'
-
 export const HEADER_HEIGHT = 50
 
 export const GAME_MODE_ARCADE = 'GAME_MODE_ARCADE'
 export const GAME_MODE_TIMETRIAL = 'GAME_MODE_TIMETRIAL'
 export const GAME_MODE_SURVIVAL = 'GAME_MODE_SURVIVAL'
 
-export let colorsBW = [40, 255, 255, 255, 255]
-export let colorsBlue = [200, 0, 0, 0, 0]
+export const YELLOW = [255, 255, 0]
+export const MAGENTA = [255, 0, 255]
+export const BLUE = [0, 255, 255]
 
-export const yellow = [255, 255, 0]
-export const magenta = [255, 0, 255]
-export const blue = [0, 255, 255]
+export const COLORS_TEXT_FLICKER = [40, 255, 255, 255, 255]
+export const COLORS_STROKE_FLICKER = [200, 0, 0, 0, 0]
+export const COLORS_STRONG_FLICKER = [
+  MAGENTA,
+  MAGENTA,
+  MAGENTA,
+  MAGENTA,
+  YELLOW,
+  MAGENTA,
+  MAGENTA,
+  MAGENTA,
+  YELLOW,
+  MAGENTA,
+  MAGENTA,
+  MAGENTA,
+  COLORS_TEXT_FLICKER,
+]
 
 export const ONE_SECOND = 1000
 export const ONE_MINUTE = ONE_SECOND * 60

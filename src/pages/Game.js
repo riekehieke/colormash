@@ -5,14 +5,14 @@ import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
-  yellow,
-  blue,
-  magenta,
+  YELLOW,
+  BLUE,
+  MAGENTA,
   ONE_MINUTE,
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 3
 
 class PixelTile {
   constructor(tile, index) {
@@ -148,14 +148,14 @@ export class Game extends BasePage {
     // Herzen für verfügbare Leben hier anzeigen
     imageMode(CENTER)
     if (this.errorCount === 0)
-      image(images.heartFilled, width / 2 + 40, 55, 22.3, 18.3)
-    else image(images.heart, width / 2 + 40, 55, 22.3, 18.3)
+      image(images.HEART_FILLED, width / 2 + 40, 55, 22.3, 18.3)
+    else image(images.HEART, width / 2 + 40, 55, 22.3, 18.3)
     if (this.errorCount <= 1)
-      image(images.heartFilled, width / 2, 55, 22.3, 18.3)
-    else image(images.heart, width / 2, 55, 22.3, 18.3)
+      image(images.HEART_FILLED, width / 2, 55, 22.3, 18.3)
+    else image(images.HEART, width / 2, 55, 22.3, 18.3)
     if (this.errorCount <= 2)
-      image(images.heartFilled, width / 2 - 40, 55, 22.3, 18.3)
-    else image(images.heart, width / 2 - 40, 55, 22.3, 18.3)
+      image(images.HEART_FILLED, width / 2 - 40, 55, 22.3, 18.3)
+    else image(images.HEART, width / 2 - 40, 55, 22.3, 18.3)
   }
 
   draw() {
@@ -173,17 +173,17 @@ export class Game extends BasePage {
 
     // Multiplier anzeigen
     if (this.multiplier === 2) {
-      fill(yellow)
+      fill(YELLOW)
       textSize(40)
       text('x2', width - 100, 370)
     }
     if (this.multiplier === 3) {
-      fill(blue)
+      fill(BLUE)
       textSize(45)
       text('x3', width - 100, 370)
     }
     if (this.multiplier === 4) {
-      fill(magenta)
+      fill(MAGENTA)
       textSize(50)
       text('x4', width - 100, 370)
     }
