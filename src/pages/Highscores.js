@@ -4,7 +4,7 @@ import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
   GAME_MODE_SURVIVAL,
-  colorsBW,
+  COLORS_TEXT_FLICKER,
 } from '../constants.js'
 
 const showOnlyFirstFive = (_, index) => index < 5
@@ -95,7 +95,7 @@ export class Highscores extends BasePage {
 
     // Press R to reset Highscores
     textSize(10)
-    fill(random(colorsBW))
+    fill(random(COLORS_TEXT_FLICKER))
     text('PRESS R TO RESET HIGHSCORES', width / 2, height - 30)
   }
 

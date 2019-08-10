@@ -31,7 +31,7 @@ export class BasePage {
   // Private Methoden, die Grundmethoden wie draw & onKeyPress erweitern (siehe constructor)
   _drawBackground() {
     imageMode(CORNER)
-    image(images.background, 0, 0)
+    image(images.PAGE_BACKGROUND, 0, 0)
   }
   _drawHeader() {
     if (this.header) this.header.draw()

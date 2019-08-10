@@ -1,10 +1,12 @@
 import { BasePage, Game } from './index.js'
 import { state, images } from '../sketch.js'
-import * as LEVELS from '../levels/index.js'
-import { colorsBW, colorsBlue, magenta, yellow, blue } from '../constants.js'
 import { createChunkedArray, buildImageFromTiles } from '../utils.js'
-
-const allLevels = Object.values(LEVELS)
+import * as LEVELS from '../levels/index.js'
+import {
+  MAGENTA,
+  COLORS_TEXT_FLICKER,
+  COLORS_STROKE_FLICKER,
+} from '../constants.js'
 
 class LevelButton {
   constructor(level) {
@@ -20,13 +22,13 @@ class LevelButton {
     if (level.mode !== 'text') {
       noSmooth()
       imageMode(CENTER)
-      image(picture || images.placeholderImg, x, y, 130, 130)
+      image(picture || images.LEVEL_THUMB, x, y, 130, 130)
     }
 
     // Button outline
     strokeWeight(8)
-    if (isSelected) stroke(random(colorsBlue), 255, 255)
-    else stroke(magenta)
+    if (isSelected) stroke(random(COLORS_STROKE_FLICKER), 255, 255)
+    else stroke(MAGENTA)
 
     // Button background
     fill(level.mode === 'text' ? 0 : color(0, 0, 0, 0))
@@ -58,7 +60,7 @@ export class ChooseLevel extends BasePage {
 
     this.drawRow = this.drawRow.bind(this)
 
-    for (const level of allLevels) {
+    for (const level of Object.values(LEVELS)) {
       if (level.mode === 'text') this.textLevels.push(level)
       else this.imageLevels.push(level)
     }
@@ -92,7 +94,7 @@ export class ChooseLevel extends BasePage {
 
     // Switch Text
     textSize(10)
-    fill(random(colorsBW))
+    fill(random(COLORS_TEXT_FLICKER))
     textAlign(CENTER, TOP)
     text('PRESS S TO SWITCH BETWEEN TEXT AND IMAGE MODE', width / 2, 150)
 

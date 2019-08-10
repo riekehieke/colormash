@@ -27,18 +27,21 @@ export class Help extends BasePage {
   draw() {
     textAlign(CENTER, TOP)
     fill(255)
+    // Überschrift & Erklärungstext
     textSize(30)
     text('HOW TO PLAY', width / 2, 100)
     textSize(10)
     textLeading(19)
     text(TEXT_EXPLANATION, width / 2, 180)
+
     textAlign(LEFT, TOP)
-    text(TEXT_ARCADE, 223, 382)
-    text(TEXT_TIMETRIAL, 223, 460)
-    text(TEXT_SURVIVAL, 223, 538)
     imageMode(CENTER)
-    image(images.starHelp, 178, 372 + 15)
-    image(images.clockHelp, 178, 452 + 15)
-    image(images.heartHelp, 178, 532 + 15)
+    // Erklärung der Spielmodi
+    image(images.STAR, 178, 372 + 15, 28, 30)
+    text(TEXT_ARCADE, 223, 382)
+    image(images.CLOCK, 178, 452 + 15, 32, 30)
+    text(TEXT_TIMETRIAL, 223, 460)
+    image(images.HEART, 178, 532 + 15, 37, 30)
+    text(TEXT_SURVIVAL, 223, 538)
   }
 }
