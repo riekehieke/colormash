@@ -88,7 +88,7 @@ export function draw() {
 
   // Fullscreen Mode
   fill(255)
-  text(`PRESS F FOR FULLSCREEN`, width / 2 - 150, 20)
+  text(`PRESS 5 FOR FULLSCREEN`, width / 2 - 150, 20)
 }
 
 export function keyPressed() {
@@ -96,7 +96,7 @@ export function keyPressed() {
     if (flamingoSong.isPlaying()) flamingoSong.pause()
     else flamingoSong.loop()
   }
-  if (key.toLowerCase() === 'f') {
+  if (key.toLowerCase() === '5') {
     let fs = fullscreen()
     fullscreen(!fs)
   }
