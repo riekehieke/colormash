@@ -12,7 +12,7 @@ import {
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 32
+const ROW_SIZE = 3
 
 class PixelTile {
   constructor(tile, index) {
@@ -160,6 +160,16 @@ export class Game extends BasePage {
 
   draw() {
     const xCoord = width / 2 - ((TILE_SIZE - 0.5) * ROW_SIZE) / 2
+
+    // Error Markierung
+    if (this.isInErrorState) {
+      rectMode(CENTER)
+      fill(0)
+      strokeWeight(15)
+      stroke(255, 0, 0)
+      rect(width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+    }
+
     // Spielbrett
     this.rows.forEach((row, index) => this.drawRow(row, index, xCoord))
 

@@ -1,4 +1,4 @@
-import { BasePage, Highscores } from './index.js'
+import { BasePage, Highscores, Game } from './index.js'
 import { state, images } from '../sketch.js'
 import { buildImageFromTiles } from '../utils.js'
 import {
@@ -112,9 +112,16 @@ export class Result extends BasePage {
     textAlign(CENTER, CENTER)
     textSize(30)
     fill(random(COLORS_STRONG_FLICKER))
-    // Status bei Arcade weiter unten, damit Platz für Sterne ist
+    // Status bei Arcade weiter oben, damit Platz für Sterne ist
     const statusOffset = currentMode !== GAME_MODE_ARCADE ? 325 : 290
     text(result.status, 578, statusOffset)
+    // Bei Game Over: Retry einblenden
+    if (result.status === 'GAME OVER') {
+      textSize(10)
+      textAlign(CENTER, TOP)
+      fill(random(COLORS_TEXT_FLICKER))
+      text('PRESS R TO RETRY', width / 2, 360)
+    }
 
     if (currentMode === GAME_MODE_ARCADE) this.drawArcade()
     if (currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial()
@@ -127,11 +134,15 @@ export class Result extends BasePage {
     textSize(10)
     textAlign(CENTER, TOP)
     fill(random(COLORS_TEXT_FLICKER))
-    text(
-      'PRESS V TO TOGGLE FULL SIZE IMAGE. PRESS H TO GO TO HIGHSCORES.',
-      width / 2,
-      height - 30,
-    )
+    if (result.status === 'YOU WIN') {
+      text(
+        'PRESS V TO TOGGLE FULL SIZE IMAGE. PRESS H TO GO TO HIGHSCORES.',
+        width / 2,
+        height - 30,
+      )
+    } else {
+      text('PRESS H TO GO TO HIGHSCORES.', width / 2, height - 30)
+    }
   }
 
   onKeyPress() {
@@ -142,7 +153,13 @@ export class Result extends BasePage {
 
     // Press V to view image
     if (key.toLowerCase() === 'v') {
+      if (state.result.status === 'GAME OVER') return
       this.displayFullImage = !this.displayFullImage
+    }
+
+    // Press R to retry
+    if (key.toLowerCase() === 'r') {
+      state.currentPage = new Game()
     }
   }
 }

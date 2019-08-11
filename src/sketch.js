@@ -84,7 +84,11 @@ export function draw() {
   else fill(random(COLORS_TEXT_FLICKER), 100)
   textSize(10)
   textAlign(CENTER)
-  text(`♪ [${SOUND_TOGGLE_KEY} TO TOGGLE]`, width / 2, 20)
+  text(`♪ PRESS ${SOUND_TOGGLE_KEY} TO TOGGLE`, width / 2 + 150, 20)
+
+  // Fullscreen Mode
+  fill(255)
+  text(`PRESS F FOR FULLSCREEN`, width / 2 - 150, 20)
 }
 
 export function keyPressed() {
@@ -92,6 +96,9 @@ export function keyPressed() {
     if (flamingoSong.isPlaying()) flamingoSong.pause()
     else flamingoSong.loop()
   }
-
+  if (key.toLowerCase() === 'f') {
+    let fs = fullscreen()
+    fullscreen(!fs)
+  }
   if (state.currentPage) state.currentPage.onKeyPress()
 }
