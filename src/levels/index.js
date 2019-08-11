@@ -9,6 +9,8 @@ import {
   reservoirDogs,
   joker,
   monaLisa,
+  cheGuevara,
+  santa,
 } from './texts.js'
 
 export const LEVEL_TRANSRAPID = {
@@ -63,4 +65,16 @@ export const LEVEL_MONA_LISA = {
   name: 'Mona Lisa',
   mode: 'image',
   tiles: createTilesFromText(monaLisa),
+}
+
+export const LEVEL_CHE_GUEVARA = {
+  name: 'Che Guevara',
+  mode: 'image',
+  tiles: createTilesFromText(cheGuevara),
+}
+
+export const LEVEL_SANTA = {
+  name: 'Santa',
+  mode: 'image',
+  tiles: createTilesFromText(santa),
 }
