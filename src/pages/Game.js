@@ -12,7 +12,7 @@ import {
 } from '../constants.js'
 
 const TILE_SIZE = 16
-const ROW_SIZE = 3
+const ROW_SIZE = 32
 
 class PixelTile {
   constructor(tile, index) {
