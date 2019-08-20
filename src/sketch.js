@@ -8,6 +8,7 @@ import {
   COLORS_TEXT_FLICKER,
 } from './constants.js'
 
+const FULLSCREEN_TOGGLE_KEY = '5'
 const SOUND_TOGGLE_KEY = '9'
 
 const defaultHighscores = {
@@ -29,6 +30,7 @@ export const state = {
   currentLevel: null,
   highscores: defaultHighscores,
   result: defaultResult,
+  isFullscreen: false,
 }
 
 export const images = {
@@ -84,21 +86,26 @@ export function draw() {
   else fill(random(COLORS_TEXT_FLICKER), 100)
   textSize(10)
   textAlign(CENTER)
-  text(`♪ PRESS ${SOUND_TOGGLE_KEY} TO TOGGLE`, width / 2 + 150, 20)
+  text(`♪ PRESS ${SOUND_TOGGLE_KEY} TO TOGGLE MUSIC`, width / 2 + 150, 20)
 
   // Fullscreen Mode
+  state.isFullscreen = fullscreen()
+  const fullScreenIcon = state.isFullscreen ? '×' : 'Ξ'
+  const fullscreenText = `${fullScreenIcon} PRESS ${FULLSCREEN_TOGGLE_KEY} FOR FULLSCREEN`
   fill(255)
-  text(`PRESS 5 FOR FULLSCREEN`, width / 2 - 150, 20)
+  text(fullscreenText, width / 2 - 150, 20)
 }
 
 export function keyPressed() {
+  // Seiten-spezifischen Key-Handler ausführen
+  if (state.currentPage) state.currentPage.onKeyPress()
+
+  // Hintergrundmusik togglen
   if (!!flamingoSong && key === SOUND_TOGGLE_KEY) {
     if (flamingoSong.isPlaying()) flamingoSong.pause()
     else flamingoSong.loop()
   }
-  if (key.toLowerCase() === '5') {
-    let fs = fullscreen()
-    fullscreen(!fs)
-  }
-  if (state.currentPage) state.currentPage.onKeyPress()
+
+  // Vollbild-Modus togglen
+  if (key === FULLSCREEN_TOGGLE_KEY) fullscreen(!state.isFullscreen)
 }
