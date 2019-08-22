@@ -64,26 +64,34 @@ werde ich derartige inhalte umgehend entfernen. `
 export class Imprint extends BasePage {
   constructor() {
     super()
-    this.textMove = 0
+    this.textOffsetY = 0
   }
 
   draw() {
+    // Überschrift
     noStroke()
     fill(255)
     textSize(30)
     textAlign(CENTER, TOP)
-    text('IMPRINT', width / 2, 100 + this.textMove)
+    text('IMPRINT', width / 2, 100 + this.textOffsetY)
+
+    // Impressumstext
     textSize(10)
     textLeading(19)
     textAlign(CENTER, TOP)
-    text(imprintText.toUpperCase(), width / 2, 180 + this.textMove)
+    text(imprintText.toUpperCase(), width / 2, 180 + this.textOffsetY)
   }
 
   onKeyPress() {
-    if (keyCode === DOWN_ARROW) this.textMove -= 40
-    if (keyCode === UP_ARROW) {
-      if (this.textMove + 40 >= 0) this.textMove = 0
-      else this.textMove += 40
+    // Bei Pfeiltaste hoch/runter den Text-Offset anpassen, damit man "scrollen" kann
+    switch (keyCode) {
+      case DOWN_ARROW:
+        this.textOffsetY -= 40
+        break
+      case UP_ARROW:
+        if (this.textOffsetY + 40 >= 0) this.textOffsetY = 0
+        else this.textOffsetY += 40
+        break
     }
   }
 }
