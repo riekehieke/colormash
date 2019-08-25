@@ -1,3 +1,8 @@
+/*
+Hier sind die Strings definiert, die die Grundlage für die verschiedenen Level bilden,
+siehe ./index.js
+*/
+
 export const transrapid =
   'Wenn Sie vom Hauptbahnhof in Muenchen mit zehn Minuten ohne dass Sie am Flughafen noch einchecken muessen dann starten Sie im Grunde genommen am Flughafen am am Hauptbahnhof in Muenchen starten Sie Ihren Flug Zehn Minuten Schauen Sie sich mal die grossen Flughaefen an wenn Sie in Heathrow in London oder sonst wo meine se Charles de Gaulle in Frankreich oder in aeh in in aeh in Rom Wenn Sie sich mal die Entfernungen ansehen wenn Sie Frankfurt sich ansehen dann werden Sie feststellen dass zehn Minuten Sie jederzeit locker in Frankfurt brauchen um ihr Gate zu finden Wenn Sie vom Flug vom vom Hauptbahnhof starten Sie steigen in den Hauptbahnhof ein Sie fahren mit dem Transrapid in zehn Minuten an den Flughafen in an den Flughafen Franz Josef Strauss Dann starten Sie praktisch hier am Hauptbahnhof in Muenchen Das bedeutet natuerlich dass der Hauptbahnhof im Grunde genommen naeher an Bayern an die bayerischen Staedte heranwaechst weil das ja klar ist weil auf dem Hauptbahnhof viele Linien aus Bayern zusammenlaufen'
 
@@ -18,7 +23,7 @@ export const kennedy =
 
 export const reservoirDogs =
   'I dont tip I dont believe in it Dont give me that if she dont make enough money she can quit I dont tip because society says I have to I mean Ill tip if somebody really deserves a tip if they really put forth the effort Ill give them something extra but this tipping automatically its for the birds as far as Im concerned theyre just doing their job She wasnt anything special I ordered coffee weve been here a long fuckin time and shes only filled my cup three times I mean when I order coffee I want it filled six times The words too fucking busy shouldnt be in a waitress vocabulary I mean these ladies arent starvin to death They make minimum wage You know I used to work minimum wage and when I did I wasnt lucky enough to have a job that society deemed tipworthy You know what this is Its the worlds smallest violin playing just for the waitresses So is workin at McDonalds but you dont feel the need to tip them do ya Well why not society says dont tip these guys over here but tip these guys over here Thats bullshit'
-  
+
 export const joker =
   'Want to know how I got these scars My father was a drinker and a fiend And one night he goes off crazier than usual Mommy gets the kitchen knife to defend herself He doesnt like that Not one bit So me watching he takes the knife to her laughing while he does it He turns to me and he says Why so serious He comes at me with the knife Why so serious He sticks the blade in my mouth Lets put a smile on that face And why so serious               Well you look nervous Is it the scars You wanna know how I got em Come here Hey Look at me So I had a wife beautiful like you who tells me I worry too much Who tells me I oughta smile more Who gambles and gets in deep with the sharks Look at me One day they carve her face And we have no money for surgeries She cant take it I just want to see her smile again hmm I just want her to know that I dont care about the scars So I stick a razor in my mouth and do this to myself And you know what She cant stand the sight of me She leaves Now I see the funny side Now Im always smiling'
 

@@ -11,9 +11,11 @@ import {
   ONE_MINUTE,
 } from '../constants.js'
 
+// Größe des Spielbretts festlegen
 const TILE_SIZE = 16
 const ROW_SIZE = 32
 
+// Klasse für ein Quadrat des Spielbrett-Rasters
 class PixelTile {
   constructor(tile, index) {
     this.tile = tile
@@ -24,11 +26,12 @@ class PixelTile {
     const { color, key, keyText } = this.tile
     const { x, y, isRevealed } = drawOptions
 
+    // Falls aufgedeckt: kleine Umrandung und schwarzer Hintergrund,
+    // ansonsten kein Rand und Tile-Farbe anzeigen
     if (!isRevealed) {
       strokeWeight(1)
       stroke(255)
     } else noStroke()
-
     fill(isRevealed ? color : 0)
 
     rectMode(CENTER)
@@ -49,6 +52,7 @@ export class Game extends BasePage {
     super()
 
     this.currentIndex = -1
+    // Spielelemente wie Zeit, Timer, Score und Fehler-Count initialisieren
     this.time = 0
     if (state.currentLevel.mode === 'text') this.timer = ONE_MINUTE * 3
     else this.timer = ONE_MINUTE * 4
@@ -60,13 +64,17 @@ export class Game extends BasePage {
     this.letterCount = 0
     this.text = 'MISTAKES: '
     this.isInErrorState = false
+
     this.drawRow = this.drawRow.bind(this)
 
+    // Gesamtanzahl an Tiles/Pixeln
     const tileCount = ROW_SIZE ** 2
 
+    // Falls Level mehr Tiles hat als gewünscht: "zuschneiden"
     let tiles = state.currentLevel.tiles
     if (tiles.length > tileCount) tiles = tiles.slice(0, tileCount)
 
+    // Für jedes Tile eine Pixel-Klasse erstellen, in Gruppen je nach ROW_SIZE einteilen
     const pixels = tiles.map((tile, index) => new PixelTile(tile, index))
     const rows = createChunkedArray(pixels, ROW_SIZE)
 
@@ -74,13 +82,16 @@ export class Game extends BasePage {
     this.rows = rows
   }
 
+  // Nächste Kachel abrufen
   get nextTile() {
     return this.tiles[this.currentIndex + 1]
   }
 
+  // Rendert eine einzelne Reihe an Kacheln
   drawRow(row, rowIndex, xCoord) {
     const yFirstRow = 84 + TILE_SIZE / 2
 
+    // Alle Kacheln der Reihe rendern
     row.forEach((pixel, columnIndex) =>
       pixel.draw({
         x: xCoord + columnIndex * TILE_SIZE,
@@ -90,10 +101,11 @@ export class Game extends BasePage {
     )
   }
 
+  // Draw-Methode für Arcade-Mode
   drawArcade(xCoord) {
     // Stoppuhr
     if (this.startTime) this.time = (millis() - this.startTime) / 1000
-    // Zeit
+    // Zeit & Score Anzeige
     fill(255)
     textAlign(CENTER, TOP)
     textSize(20)
@@ -103,12 +115,13 @@ export class Game extends BasePage {
     text(this.time.toFixed(2), xCoord / 2, 335)
     text(this.score, width - xCoord / 2, 335)
 
-    // Live Error Count
+    // Realtime Fehler Count
     textSize(10)
     fill(255)
     text(this.text + this.errorCount, width / 2, height - 30)
   }
 
+  // Draw Methode für Time Trial Mode
   drawTimetrial(xCoord) {
     // Timer
     if (this.startTime) {
@@ -116,7 +129,7 @@ export class Game extends BasePage {
       this.timeRemaining = (this.timer - spielzeit) / 1000
     }
 
-    // Zeit
+    // Zeit & Score Anzeige
     fill(255)
     textAlign(CENTER, TOP)
     textSize(20)
@@ -126,16 +139,17 @@ export class Game extends BasePage {
     text(this.timeRemaining.toFixed(2), xCoord / 2, 335)
     text(this.score, width - xCoord / 2, 335)
 
-    // Live Error Count
+    // Realtime Fehler Count
     textSize(10)
     fill(255)
     text(this.text + this.errorCount, width / 2, height - 30)
   }
 
+  // Draw Methode für Survival Mode
   drawSurvival(xCoord) {
     // Stoppuhr
     if (this.startTime) this.time = (millis() - this.startTime) / 1000
-    // Zeit
+    // Zeit & Score Anzeige
     fill(255)
     textAlign(CENTER, TOP)
     textSize(20)
@@ -145,7 +159,7 @@ export class Game extends BasePage {
     text(this.time.toFixed(2), xCoord / 2, 335)
     text(this.score, width - xCoord / 2, 335)
 
-    // Herzen für verfügbare Leben hier anzeigen
+    // Herzen für verfügbare Leben anzeigen
     imageMode(CENTER)
     if (this.errorCount === 0)
       image(images.HEART_FILLED, width / 2 + 40, 55, 22.3, 18.3)
@@ -161,7 +175,7 @@ export class Game extends BasePage {
   draw() {
     const xCoord = width / 2 - ((TILE_SIZE - 0.5) * ROW_SIZE) / 2
 
-    // Error Markierung
+    // Markierung, wenn Fehler gemacht wird
     if (this.isInErrorState) {
       rectMode(CENTER)
       fill(0)
@@ -170,15 +184,15 @@ export class Game extends BasePage {
       rect(width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
     }
 
-    // Spielbrett
+    // Die einzelnen Reihen des Spielfelds rendern
     this.rows.forEach((row, index) => this.drawRow(row, index, xCoord))
 
-    // Spielbrett je nach Modus anpassen
+    // Je nade dem welcher Mode gewählt ist: Mode-spezifische draw-Methoden ausführen
     if (state.currentMode === GAME_MODE_ARCADE) this.drawArcade(xCoord)
     if (state.currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial(xCoord)
     if (state.currentMode === GAME_MODE_SURVIVAL) this.drawSurvival(xCoord)
 
-    // Timetrial: Game Over wenn Zeit abgelaufen
+    // Im Timetrial-Mode: Game Over wenn Zeit abgelaufen
     if (this.timeRemaining <= 0) this.timeOut()
 
     // Multiplier anzeigen
@@ -199,6 +213,8 @@ export class Game extends BasePage {
     }
   }
 
+  // Wenn Zeit abgelaufen: Endwerte (Status, Score und letzte Position im Spiel)
+  // im State speichern und zu nächster Seite gehen
   timeOut() {
     state.result.time = this.timeRemaining = 0
     state.result.status = 'GAME OVER'
@@ -208,6 +224,8 @@ export class Game extends BasePage {
     state.currentPage = new Result()
   }
 
+  // Wenn keine Leben mehr übrig: Endwerte (Zeit, Status, Score und letzte Position im Spiel)
+  // im State speichern und zu nächster Seite gehen
   outOfHearts() {
     state.result.time = (millis() - this.startTime) / 1000
     state.result.hearts = 0
@@ -218,10 +236,11 @@ export class Game extends BasePage {
     state.currentPage = new Result()
   }
 
+  // Beschreibt, was passiert wenn das Spiel gewonnen wird
   win() {
-    // Perfektes Spiel Bonuspunkte
+    // Wenn Perfektes Spiel: Bonuspunkte zu Score addieren
     if (this.errorCount === 0) this.score += 48200
-    // Zeit Mulitplier
+    // Mulitplier je nach Zeit berechnen
     if (state.currentMode !== GAME_MODE_TIMETRIAL) {
       let timeBefore = (millis() - this.startTime) / 1000
       if (timeBefore / 32 > 25) this.multiplierTime = 1
@@ -232,9 +251,9 @@ export class Game extends BasePage {
     // Ergebnisse speichern
     state.result.time = (millis() - this.startTime) / 1000
     state.result.status = 'YOU WIN'
-    // Zusätzlich für Survival Mode
+    // Zusätzlich für Survival Mode die Anzahl der verbleibenden leben speichern
     state.result.hearts = 3 - this.errorCount
-    // Timetrial Mode
+    // Im Timetrial Mode: Multiplier nach Rest-Zeit berechnen & Restzeit speichern
     if (state.currentMode === GAME_MODE_TIMETRIAL) {
       let timeBefore = 300 - this.timeRemaining
       if (timeBefore / 32 > 10) this.multiplierTime = 1
@@ -243,17 +262,21 @@ export class Game extends BasePage {
       if (timeBefore / 32 <= 3) this.multiplierTime = 4
       state.result.time = this.timeRemaining
     }
-
+    // Score und letzte Position speichern
     state.result.score = this.score * this.multiplierTime
     state.result.tileIndex = this.currentIndex
+    // Zu Result-Seite gehen
     state.currentPage = new Result()
   }
 
+  // Beschreibt, was passiert wenn zur nächsten Kachel im Spiel gegangen wird
   goNext() {
+    // Fehler-Status auf False setzen, Index erhöhen
+    // und Count für Eingaben ohne Fehler erhöhen
     this.isInErrorState = false
     this.currentIndex++
     this.letterCount++
-    // Multiplier berechnen
+    // Multiplier berechnen: Höher, umso mehr Tasten man in Fole ohne Fehler drückt
     if (this.letterCount > 10) this.multiplier = 2
     if (this.letterCount > 20) this.multiplier = 3
     if (this.letterCount > 30) this.multiplier = 4
@@ -261,28 +284,36 @@ export class Game extends BasePage {
     this.score += 50 * this.multiplier
   }
 
+  // Beschreibt, was passiert wenn ein Fehler gemacht wird
   handleError() {
+    // Falls vorher schon ein Fehler gemacht wird, returnen
     if (this.isInErrorState) return
 
+    // Fehler-Status auf true setzen, Fehler-Count erhöhen
+    // und Count für Eingaben am Stück ohne Fehler auf 0 zurücksetzen
     this.isInErrorState = true
     this.errorCount++
     this.letterCount = 0
     this.multiplier = 1
-
+    // Survival Mode: Falls Fehler Count größer gleich 3 ist: Keine Leben mehr übrig
     if (this.errorCount >= 3 && state.currentMode === GAME_MODE_SURVIVAL)
       this.outOfHearts()
   }
 
   onKeyPress() {
+    // Stoppuhr/Timer starten
     if (!this.startTime) this.startTime = millis()
 
-    // Spiel vorbei
+    // Wenn richtige Taste gedrückt wurde und es noch weitere (unausgefüllte) Kacheln gibt,
+    // goNext() ausführen, sonst handleError() ausführen
     if (this.nextTile) {
       const nextKey = this.nextTile.key
       if (key.toLowerCase() === nextKey) this.goNext()
       else if (keyCode !== SHIFT) this.handleError()
     }
 
+    // Wenn keine weiteren (unausgefüllten) Kacheln mehr vorhanden sind:
+    // win() ausführen -> Spiel gewonnen
     if (!this.nextTile) this.win()
   }
 }

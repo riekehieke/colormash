@@ -7,7 +7,7 @@ export class Header {
     fill(40)
     rect(0, 0, width, HEADER_HEIGHT)
 
-    // Navigation tip
+    // Navigations-Hinweis
     fill(255)
     textSize(10)
     textAlign(LEFT, TOP)

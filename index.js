@@ -7,7 +7,7 @@ window.draw = draw
 window.keyPressed = keyPressed
 
 // Escape-Taste locken, damit Escape nicht den Vollbild-Modus beendet,
-// sondern vom Spiel zur Navigation genutzt werden kann
+// sondern vom Spiel zur Navigation genutzt werden kann (aktuell nur Chromium)
 if ('keyboard' in navigator && navigator.keyboard.lock) {
   navigator.keyboard.lock(['Escape']).catch(error => {
     console.log('Escape-Taste konnte nicht gelockt werden:')

@@ -7,7 +7,10 @@ import {
   COLORS_STROKE_FLICKER,
 } from '../constants.js'
 
+// Klasse für den Auswahl-Button der Hauptnavigation
 class MenuButton {
+  // Beim Erstellen des Buttons speichern, auf welche Seite dieser verweist
+  // und wie er aussehen soll (drawOptions)
   constructor(TargetPage, drawOptions) {
     this.TargetPage = TargetPage
     this.drawOptions = drawOptions
@@ -16,17 +19,17 @@ class MenuButton {
   draw(isSelected) {
     const { x, y, label } = this.drawOptions
 
-    // Button outline
+    // Button Outline
     strokeWeight(8)
     if (isSelected) stroke(random(COLORS_STROKE_FLICKER), 255, 255)
     else stroke(MAGENTA)
 
-    // Button background
+    // Button Background
     fill(0)
     rectMode(CENTER)
     rect(x, y, 300, 75)
 
-    // Button label
+    // Button Label
     noStroke()
     fill(255)
     textSize(18)
@@ -37,12 +40,15 @@ class MenuButton {
 
 export class Start extends BasePage {
   constructor() {
+    // super() führt den constructor der BasePage aus
     super()
+    // Header (in BasePage instanziiert), auf null setzen, da auf Startseite nicht benötigt
     this.header = null
 
     const xCenter = width / 2
     const yFirstButton = 225 + 37.5
 
+    // Für die drei Menüpunkte Buttons erstellen
     const startButton = new MenuButton(ChooseMode, {
       label: 'START',
       x: xCenter,
@@ -59,10 +65,12 @@ export class Start extends BasePage {
       y: yFirstButton + 2 * 125,
     })
 
+    // Die Buttons, und die Auswahl, welcher Button aktuellen angewählt ist, speichern
     this.buttons = [startButton, helpButton, leaderboardButton]
     this.currentIndex = 0
   }
 
+  // der aktuell angewählte Button
   get selectedButton() {
     return this.buttons[this.currentIndex]
   }
@@ -95,6 +103,9 @@ export class Start extends BasePage {
   onKeyPress() {
     if (key === 'i') state.currentPage = new Imprint()
 
+    // Die Pfeiltasten-Navigation.
+    // Da es am Anfang und Ende nicht weitergeht, müssen wir wissen,
+    // ob erster/letzter Button schon angewählt ist.
     const lastIsSelected = this.currentIndex === this.buttons.length - 1
     const firstIsSelected = this.currentIndex === 0
 

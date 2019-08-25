@@ -25,18 +25,18 @@ const TEXT_SURVIVAL = `- SURVIVAL MODE: YOU HAVE THREE LIVES. WITH EVERY ERROR Y
 
 export class Help extends BasePage {
   draw() {
+    // Überschrift & allgemeiner Erklärungstext
     textAlign(CENTER, TOP)
     fill(255)
-    // Überschrift & Erklärungstext
     textSize(30)
     text('HOW TO PLAY', width / 2, 100)
     textSize(10)
     textLeading(19)
     text(TEXT_EXPLANATION, width / 2, 180)
 
+    // Erklärung der Spielmodi: Bild links & Text daneben
     textAlign(LEFT, TOP)
     imageMode(CENTER)
-    // Erklärung der Spielmodi
     image(images.STAR, 178, 372 + 15, 28, 30)
     text(TEXT_ARCADE, 223, 382)
     image(images.CLOCK, 178, 452 + 15, 32, 30)
