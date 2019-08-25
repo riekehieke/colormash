@@ -14,13 +14,13 @@ https://www.youtube.com/channel/UCdYvD9C-0yTlmx3hc67bVFQ
 
 angaben gemäß § 5 tmg
 
-rieke helmers
-johannesstraße 18
-27570 bremerhaven
+jonas Kuske
+sielstraße 5
+27568 Bremerhaven
 
 kontakt
-e-mail: mail@riekehelmers.com
-website: https://www.riekehelmers.com
+e-mail: mail@jonaskuske.com
+website: https://www.jonaskuske.com
 
 haftungsausschluss
 
@@ -64,6 +64,7 @@ werde ich derartige inhalte umgehend entfernen. `
 export class Imprint extends BasePage {
   constructor() {
     super()
+    // Da man den Text scrollen kann: speichern um wie viel Pixel auf der y-Achse gescrollt wurde
     this.textOffsetY = 0
   }
 
@@ -89,6 +90,7 @@ export class Imprint extends BasePage {
         this.textOffsetY -= 40
         break
       case UP_ARROW:
+        // Falls Orginalposition des Textes erreicht: nicht weiter scrollen
         if (this.textOffsetY + 40 >= 0) this.textOffsetY = 0
         else this.textOffsetY += 40
         break

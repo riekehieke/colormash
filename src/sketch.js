@@ -8,6 +8,7 @@ import {
   COLORS_TEXT_FLICKER,
 } from './constants.js'
 
+// Konstanten, die in diesem Modul verwendet werden
 const FULLSCREEN_TOGGLE_KEY = '5'
 const SOUND_TOGGLE_KEY = '9'
 
@@ -24,6 +25,8 @@ const defaultResult = {
   hearts: null,
 }
 
+// Der Anwendungs-State, der alle Informationen über den momentanen Zustand des Spiels speichert
+// und Änderungen daran ermöglicht, bspw. wenn die Seite gewechselt wird.
 export const state = {
   currentPage: null,
   currentMode: null,
@@ -33,6 +36,7 @@ export const state = {
   isFullscreen: false,
 }
 
+// Objekt, in das die verwendeten (externen) Bilder während dem preload() gespeichert werden
 export const images = {
   STAR: null,
   STAR_FILLED: null,
@@ -49,7 +53,10 @@ let pressStart2P = null
 // Song
 let flamingoSong = null
 
+// Benötigte Assets laden, bevor setup() ausgeführt werden kann
+// Bereitgestellt durch p5.js
 export function preload() {
+  // Highscores aus dem LocalStorage laden und im State speichern
   const storedHighscores = localStorage.getItem('__HIGHSCORES')
   if (storedHighscores) state.highscores = JSON.parse(storedHighscores)
 
@@ -66,6 +73,7 @@ export function preload() {
   flamingoSong = loadSound('./src/assets/sounds/flamingo.mp3')
 }
 
+// Einmaliges Setup - Canvas erstellen, Font definieren, Musik starten und Startseite laden
 export function setup() {
   createCanvas(1155, 650)
 
@@ -76,8 +84,11 @@ export function setup() {
   flamingoSong.loop()
 }
 
+// Draw-Methode definieren, die dann 60x pro s ausgeführt wird.
+// Wird durch eigene draw-Methoden der Seiten-Klassen ergänzt.
 export function draw() {
   background(0)
+  // Seiten-spezifische draw-Methode ausführen
   state.currentPage.draw()
 
   // Info zu Sound an-/ausschalten
@@ -88,7 +99,7 @@ export function draw() {
   textAlign(CENTER)
   text(`♪ PRESS ${SOUND_TOGGLE_KEY} TO TOGGLE MUSIC`, width / 2 + 150, 20)
 
-  // Fullscreen Mode
+  // Fullscreen Mode an-/ausschalten
   state.isFullscreen = fullscreen()
   const fullScreenIcon = state.isFullscreen ? '×' : 'Ξ'
   const fullscreenText = `${fullScreenIcon} PRESS ${FULLSCREEN_TOGGLE_KEY} FOR FULLSCREEN`
@@ -96,6 +107,7 @@ export function draw() {
   text(fullscreenText, width / 2 - 150, 20)
 }
 
+// keyPressed-Methode, wird von p5.js immer dann ausgeführt, wenn eine Taste gedrückt wurde
 export function keyPressed() {
   // Seiten-spezifischen Key-Handler ausführen
   if (state.currentPage) state.currentPage.onKeyPress()

@@ -4,8 +4,8 @@ export function throwError(message) {
   throw Error(message)
 }
 
-export const getRandomColor = () => color(random(255), random(255), random(255))
-
+// Teilt ein Array in gleichgroße Teile auf und speichert diese in einzelnen Arrays
+// Wird z.B. für das Erstellen des "Spielbretts" benötigt.
 export function createChunkedArray(targetArray, chunkSize = 10) {
   targetArray = targetArray.slice()
   var chunkedArray = []
@@ -17,6 +17,8 @@ export function createChunkedArray(targetArray, chunkSize = 10) {
   return chunkedArray
 }
 
+// Wandelt einen String in ein Array aus Objekten um, wobei jedes Objekt
+// den Buchstaben mit zugehöriger Information wie Farbe enthält
 export const createTilesFromText = text => {
   text = text
     .replace(/\n/g, '')
@@ -30,6 +32,10 @@ export const createTilesFromText = text => {
   return tiles
 }
 
+// Nimmt durch createTilesFromText() erstelltes Array aus Objekten entgegen
+// und erstellt daraus ein Bild, indem es die Farbe aus den Objekten den Pixeln zuweist
+// Dadurch entsteht die visuelle Repräsentation einer Buchstabenfolge
+// Wird u.A. für Thumbnails und den Result-Screen verwendet
 export const buildImageFromTiles = tiles => {
   const image = createImage(32, 32)
   image.loadPixels()

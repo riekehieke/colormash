@@ -13,24 +13,30 @@ import {
 export class Result extends BasePage {
   constructor() {
     super()
-    this.displayFullImage = false
 
-    const progressTiles = state.currentLevel.tiles.map((tile, index) => {
+    // Speichern, ob die Vollbild-Ansicht des Bildes gerade aktiv ist oder nicht
+    this.showFullscreenView = false
+
+    // Die anzuzeigenden Tiles/Farben: nicht erreichte Tiles durch Farbe schwarz ersetzen
+    const imageTiles = state.currentLevel.tiles.map((tile, index) => {
       return index <= state.result.tileIndex ? tile : { color: 0 }
     })
 
-    this.fullPicture = buildImageFromTiles(state.currentLevel.tiles)
-    this.progressPicture = buildImageFromTiles(progressTiles)
+    // Anzuzeigendes Bild - basierend auf den imageTiles mit schwarzen Pixeln, wo unerreicht
+    this.resultImage = buildImageFromTiles(imageTiles)
 
+    // Bei Erreichen der Result-Seite aktuelles Spiel in den Highscores speichern
     state.highscores[state.currentMode].push(state.result)
     localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
   }
 
+  // Draw Methode für Arcade Mode
   drawArcade() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
     const posRight = width - posLeft
     const { score, time } = state.result
 
+    // Zeit & Score anzeigen
     fill(YELLOW)
     textAlign(CENTER, TOP)
     textSize(20)
@@ -40,7 +46,7 @@ export class Result extends BasePage {
     text(time.toFixed(2), posLeft, 335)
     text(score, posRight, 335)
 
-    // Sterne
+    // Erreichte Sterne anhand des Scores berechnen und anzeigen
     imageMode(CENTER)
     const firstStar = score >= 100000 ? images.STAR_FILLED : images.STAR
     const secondStar = score >= 300000 ? images.STAR_FILLED : images.STAR
@@ -50,6 +56,7 @@ export class Result extends BasePage {
     image(thirdStar, 578 + 100, 360)
   }
 
+  // Draw Methode für Time Trial Mode
   drawTimetrial() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
     const posRight = width - posLeft
@@ -65,6 +72,7 @@ export class Result extends BasePage {
     text(score, posRight, 335)
   }
 
+  // Draw Methode für Survival Mode
   drawSurvival() {
     const posLeft = (width / 2 - (16 * 32) / 2) / 2
     const posRight = width - posLeft
@@ -79,7 +87,7 @@ export class Result extends BasePage {
     text(time.toFixed(2), posLeft, 335)
     text(score, posRight, 335)
 
-    // Herzen für verfügbare Leben hier anzeigen
+    // Herzen anzeigen: Verbleibende Herzen ausgefüllt, verlorene Leben umrandet
     imageMode(CENTER)
     const firstHeart = hearts >= 1 ? images.HEART_FILLED : images.HEART
     const secondHeart = hearts >= 2 ? images.HEART_FILLED : images.HEART
@@ -89,32 +97,36 @@ export class Result extends BasePage {
     image(thirdHeart, width / 2 + 40, 55, 22.3, 18.3)
   }
 
-  drawFullImage() {
+  // Rendert die Vollbild-Ansicht des fertigen Bildes
+  // (die man aktivieren kann, falls man das Level geschafft hat)
+  drawFullscreenImage() {
     fill(0, 0, 0, 230)
     rectMode(CORNER)
     rect(0, 0, width, height)
     rectMode(CENTER)
     imageMode(CENTER)
-    image(this.fullPicture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+    image(this.resultImage, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
   }
 
   draw() {
     const { currentMode, result } = state
 
-    // Fertiges Bild
+    // Aus Spielfortschritt resultierendes Bild anzeigen
     imageMode(CENTER)
-    image(this.progressPicture, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
+    image(this.resultImage, width / 2, (16 * 32) / 2 + 84, 16 * 32, 16 * 32)
 
-    // You Win/Game Over Banner
+    // Pop-up für Game Over/You Win Schriftzug:
+    // Hintergrund
     noStroke()
     fill(0)
     rect(578, 325, 400, 200)
+    // Schriftzug (bei Arcade weiter oben, damit Platz für Sterne ist)
     textAlign(CENTER, CENTER)
     textSize(30)
     fill(random(COLORS_STRONG_FLICKER))
-    // Status bei Arcade weiter oben, damit Platz für Sterne ist
     const statusOffset = currentMode !== GAME_MODE_ARCADE ? 325 : 290
     text(result.status, 578, statusOffset)
+
     // Bei Game Over: Retry einblenden
     if (result.status === 'GAME OVER') {
       textSize(10)
@@ -123,14 +135,24 @@ export class Result extends BasePage {
       text('PRESS R TO RETRY', width / 2, 360)
     }
 
-    if (currentMode === GAME_MODE_ARCADE) this.drawArcade()
-    if (currentMode === GAME_MODE_TIMETRIAL) this.drawTimetrial()
-    if (currentMode === GAME_MODE_SURVIVAL) this.drawSurvival()
+    // Die draw-Methode des aktuell ausgewählten Spielmodus ausführen
+    switch (currentMode) {
+      case GAME_MODE_ARCADE:
+        this.drawArcade()
+        break
+      case GAME_MODE_TIMETRIAL:
+        this.drawTimetrial()
+        break
+      case GAME_MODE_SURVIVAL:
+        this.drawSurvival()
+        break
+    }
 
-    // Full Image
-    if (this.displayFullImage) this.drawFullImage()
+    // Vollbild-Ansicht des Bilds rendern, falls aktiviert
+    if (this.showFullscreenView) this.drawFullscreenImage()
 
-    // Insctructions press V & H
+    // Hinweise für "h" (Highscores) und "v" (Vollbild-Ansicht)
+    // Vollbild-Ansicht nicht bei Game Over verfügbar
     textSize(10)
     textAlign(CENTER, TOP)
     fill(random(COLORS_TEXT_FLICKER))
@@ -140,26 +162,17 @@ export class Result extends BasePage {
         width / 2,
         height - 30,
       )
-    } else {
-      text('PRESS H TO GO TO HIGHSCORES.', width / 2, height - 30)
-    }
+    } else text('PRESS H TO GO TO HIGHSCORES.', width / 2, height - 30)
   }
 
   onKeyPress() {
-    // Press H to go to Highscores
-    if (key.toLowerCase() === 'h') {
-      state.currentPage = new Highscores()
-    }
+    // "h" und "r" navigieren zu anderen Seiten
+    if (key.toLowerCase() === 'h') state.currentPage = new Highscores()
+    if (key.toLowerCase() === 'r') state.currentPage = new Game()
 
-    // Press V to view image
-    if (key.toLowerCase() === 'v') {
-      if (state.result.status === 'GAME OVER') return
-      this.displayFullImage = !this.displayFullImage
-    }
-
-    // Press R to retry
-    if (key.toLowerCase() === 'r') {
-      state.currentPage = new Game()
+    // "v" zeigt Bild in der Vollbild-Ansicht, falls Level erfolgreich abgeschlossen wurde
+    if (key.toLowerCase() === 'v' && state.result.status !== 'GAME OVER') {
+      this.showFullscreenView = !this.showFullscreenView
     }
   }
 }

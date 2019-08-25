@@ -1,3 +1,4 @@
+// "Barrel"-Datei: zentrale Anlaufstelle für alle Seiten-Importe
 export { BasePage } from './BasePage.js'
 
 export { Start } from './Start.js'

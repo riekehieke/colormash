@@ -1,3 +1,8 @@
+/*
+Globale Konstanten, die an verschiedenen Stellen im Programm verwendet werden,
+einheitlich sein müssen und deswegen hier zentral definiert werden.
+*/
+
 export const HEADER_HEIGHT = 50
 
 export const GAME_MODE_ARCADE = 'GAME_MODE_ARCADE'

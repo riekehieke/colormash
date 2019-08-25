@@ -4,7 +4,7 @@ const CACHE_NAME = APP_NAME + '@' + APP_VERSION
 
 const staticAssets = ['.']
 
-// get the filenames to cache from the parcel-manifest and add them to cache
+// Nach Installation bekannte Assets dem Cache hinzufügen
 self.addEventListener('install', event => {
   event.waitUntil(
     caches
@@ -14,7 +14,7 @@ self.addEventListener('install', event => {
   )
 })
 
-/* delete old caches on activation */
+// Bei Aktivierung alten Cache löschen
 self.addEventListener('activate', event => {
   const allowedCaches = [CACHE_NAME]
   event.waitUntil(
@@ -29,12 +29,13 @@ self.addEventListener('activate', event => {
   )
 })
 
-const checkResponseStatus = r =>
-  new Promise((res, rej) => {
+const checkResponseStatus = r => {
+  return new Promise((res, rej) => {
     if ((r.status >= 200 && r.status < 300) || r.status === 0) res(r)
     else rej(r.statusText)
   })
-/* Helper functions to determine whether requests/responses should be cached */
+}
+
 const isRequestCacheable = request => {
   const url = new URL(request.url)
   if (url.protocol === 'chrome-extension:') return false
@@ -42,7 +43,7 @@ const isRequestCacheable = request => {
   return true
 }
 const isResponseCacheable = response => {
-  // don't cache opaque response to prevent exceeding cache size quota
+  // Keine opaque responses cachen, siehe
   // see https://cloudfour.com/thinks/when-7-kb-equals-7-mb/
   if (response.status === 0 || response.type === 'opaque') return false
 
@@ -72,13 +73,11 @@ const requestThenCache = (event, cache) => {
 }
 
 self.addEventListener('fetch', event => {
-  // if request should not be cached: respond with normal 404 fetch and return
   if (!isRequestCacheable(event.request)) {
     event.respondWith(requestFailingWith404(event))
     return
   }
 
-  // ! ignore query strings
   const requestURL = event.request.url
   const request = requestURL.includes('?')
     ? new Request(requestURL.substring(requestURL.indexOf('?') + 1))

@@ -11,17 +11,20 @@ const showOnlyFirstFive = (_, index) => index < 5
 
 class HighscoreColumn {
   constructor(values, drawOptions) {
-    // Setup
     this.values = values
     this.drawOptions = drawOptions
   }
+
   draw() {
     noStroke()
     textAlign(CENTER, TOP)
     textSize(18)
+
+    // Highscores der Größe nach sortieren (Höchster Highscore zuerst)
     if (!this.drawOptions.noSort) {
       this.values = this.values.sort((a, b) => b.score - a.score)
     }
+    // Bei den ersten 5 Einträgen den "score"-Wert als Text anzeigen
     this.values.filter(showOnlyFirstFive).forEach((value, i) => {
       text(value.score, this.drawOptions.x, this.drawOptions.y + 68 * i)
     })
@@ -39,11 +42,13 @@ export class Highscores extends BasePage {
 
     this.offset = -41.5
 
+    // Die Daten für die 4 Spalten an Highscores (Index und Scores der 3 Modi)
     const numbers = ['1.', '2.', '3.', '4.', '5.'].map(num => ({ score: num }))
     const arcadeScores = state.highscores[GAME_MODE_ARCADE]
     const timetrialScores = state.highscores[GAME_MODE_TIMETRIAL]
     const survivalScores = state.highscores[GAME_MODE_SURVIVAL]
 
+    // Für jede der vier angezeigten Spalten eine HighscoreColumn-Klasse erstellen
     const numberColumn = new HighscoreColumn(numbers, {
       x: (xFirst - 160) / 2 + 160 + this.offset,
       y: yRow,
@@ -62,6 +67,7 @@ export class Highscores extends BasePage {
       y: yRow,
     })
 
+    // Alle Spalten in einem Array speichern
     this.columns = [numberColumn, arcadeColumn, timetrialColumn, survivalColumn]
   }
 
@@ -71,11 +77,10 @@ export class Highscores extends BasePage {
     textAlign(CENTER, TOP)
     textSize(30)
     text('HIGHSCORES', width / 2, 100)
-    // Modi
+    // Tabellen-Überschriften
     textAlign(LEFT, TOP)
     textSize(18)
     text('ARCADE', 310 + this.offset, 192)
-    //text('TIMETRIAL', width / 2, 192)
     text('TIMETRIAL', 536 + this.offset, 192)
     text('SURVIVAL', 798 + this.offset, 192)
     // Tabelle
@@ -86,20 +91,18 @@ export class Highscores extends BasePage {
     line(xSecond + this.offset, 180, xSecond + this.offset, height - 70)
     line(xThird + this.offset, 180, xThird + this.offset, height - 70)
 
-    // Numbers
+    // Spalten (Highscore-Einträge) rendern
+    this.columns.forEach(column => column.draw())
 
-    // Highscore Entrys rendern
-    this.columns.forEach(column => {
-      column.draw()
-    })
-
-    // Press R to reset Highscores
+    // Hinweis zum Highscore-Reset
     textSize(10)
     fill(random(COLORS_TEXT_FLICKER))
     text('PRESS R TO RESET HIGHSCORES', width / 2, height - 30)
   }
 
   onKeyPress() {
+    // Bei "r"-Taste:
+    // Alle Highscores auf leere Arrays zurücksetzen, dann Seite neu laden
     if (key.toLowerCase() === 'r') {
       state.highscores = {
         [GAME_MODE_ARCADE]: [],
