@@ -1,6 +1,6 @@
 import { BasePage, Highscores, Game } from './index.js'
 import { state, images } from '../sketch.js'
-import { buildImageFromTiles } from '../utils.js'
+import { buildImageFromTiles, cloneDeep } from '../utils.js'
 import {
   GAME_MODE_ARCADE,
   GAME_MODE_TIMETRIAL,
@@ -26,7 +26,7 @@ export class Result extends BasePage {
     this.resultImage = buildImageFromTiles(imageTiles)
 
     // Bei Erreichen der Result-Seite aktuelles Spiel in den Highscores speichern
-    state.highscores[state.currentMode].push(state.result)
+    state.highscores[state.currentMode].push(cloneDeep(state.result))
     localStorage.setItem('__HIGHSCORES', JSON.stringify(state.highscores))
   }
 

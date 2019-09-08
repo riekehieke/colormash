@@ -1,5 +1,5 @@
 const APP_NAME = 'color mash'
-const APP_VERSION = '1.1.4'
+const APP_VERSION = '1.1.5'
 const CACHE_NAME = APP_NAME + '@' + APP_VERSION
 
 const staticAssets = ['.']
